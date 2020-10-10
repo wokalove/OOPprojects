@@ -1,7 +1,10 @@
-class Convert:
-    def __init__(self,curr):
-        self.currency = curr
-    def convert():
+from Data import *
+
+class Convert(object):
+    @staticmethod
+    def convert(self,money,from_currency, to_currency):
+        print(money,from_currency,to_currency)
+        
        
 '''
         initial_amount = amount 
@@ -12,3 +15,4 @@ class Convert:
         amount = round(amount * self.rates[to_currency], 2) 
         print('{} {} = {} {}'.format(initial_amount, from_currency, amount, to_currency)) 
 '''
+

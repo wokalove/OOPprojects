@@ -1,9 +1,12 @@
+from BusinessLogic import *
+
 class UserInterface(object):
     def questions(self):
-        money = input("Enter money amount:")
-        from_currency = input("From currency:")
-        to_currency = input("To currency:")
-        print(money,from_currency,to_currency)
+        self.money = input("Enter money amount:")
+        self.from_currency = input("From currency:")
+        self.to_currency = input("To currency:")
+    
+        #Convert.convert()
 
 interface = UserInterface()
 interface.questions()

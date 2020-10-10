@@ -16,10 +16,8 @@ class Parsing:
 class CurrencySet:
     def __init__(self,obj):
         self.currency_set = obj.data
-        #print(self.currency_set)
-        print(self.currency_set.get('tabela_kursow'))
+        print(self.currency_set)
         
-
 class Currency:
     def __init__(self,obj):
         self.obj = obj

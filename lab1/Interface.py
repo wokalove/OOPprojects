@@ -6,7 +6,7 @@ class UserInterface(object):
         self.from_currency = input("From currency:")
         self.to_currency = input("To currency:")
     
-        #Convert.convert()
+        Convert.convert(self.money,self.from_currency,self.to_currency)
 
 interface = UserInterface()
 interface.questions()

@@ -2,7 +2,7 @@ from Data import *
 
 class Convert(object):
     @staticmethod
-    def convert(self,money,from_currency, to_currency):
+    def convert(money,from_currency, to_currency):
         print(money,from_currency,to_currency)
         
        

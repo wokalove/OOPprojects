@@ -1,14 +1,16 @@
 from BusinessLogic import Convert
+from Data import*
 
 class UserInterface(object):
     def __init__(self) -> None:
         self.business_logic = Convert()
+        self.data = Currency()
     def questions(self):
         self.money = int(input("Enter money amount:"))
         self.from_currency = input("From currency:")
         self.to_currency = input("To currency:")
 
-        #Currency.get_rate()
+        rates = self.data.get_currency_rate(self.from_currency,self.to_currency)
         rate_one = 1
         rate_two = 2
         converter_one = 1

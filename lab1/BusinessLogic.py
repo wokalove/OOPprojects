@@ -10,11 +10,11 @@ class Convert(object):
         converted = money/avg_exchange_rate*converter
         return converted
     
-    def convert(self,money,currency_one, currency_two,converter_one, converter_two):
-        to_pln = self.convert_to_pln(money, currency_one,converter_one)
-        converted_money = self.convert_from_pln(to_pln,currency_two,converter_two)
+    def convert(self,money,rate_one, rate_two,converter_one, converter_two):
+        to_pln = self.convert_to_pln(money, rate_one,converter_one)
+        converted_money = self.convert_from_pln(to_pln,rate_two,converter_two)
+        print (converted_money)
         return converted_money
 
 
 con = Convert()
-print(con.convert_to_pln(20,4.30,100))

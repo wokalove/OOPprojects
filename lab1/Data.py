@@ -4,13 +4,13 @@ import xmltodict
 class Connect:
     def __init__(self,url_link):
         self.connect = urllib.request.urlopen(url_link)
-        #Parsing(self)
+        
 
 class Parsing:
     def __init__(self,obj):
         read_file = obj.connect.read()
         self.data = xmltodict.parse(read_file)
-        #CurrencySet(self)
+        
         
 class CurrencySet:
     def __init__(self,obj):
@@ -28,7 +28,6 @@ class CurrencySet:
 class Currency(object):
     
     def get_currency_name(self,curr,name):
-         
         self.len_currency_set = len(curr.currency_set)
         for i in range(self.len_currency_set):
             self.result_list = [v for k,v in curr.currency_set[i].items()]

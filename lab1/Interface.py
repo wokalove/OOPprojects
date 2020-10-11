@@ -20,15 +20,22 @@ class UserInterface(object):
         #self.to_curr = input("To currency:")
         self.from_curr = 'peso filipińskie'
         self.to_curr = 'frank szwajcarski'
-        rate = currency.get_currency_rate(currency_set,self.from_curr,self.to_curr)
-        #print(rate)
-        #rates = self.data.get_currency_rate(self.from_currency,self.to_currency)
         
+        rates = currency.get_currency_rate(currency_set,self.from_curr,self.to_curr)
+        
+        rate=[]
+        for r in rates:
+            rate.append(float(r.replace(',', '.')))
         rate_one = rate[0]
         rate_two = rate[1]
-        print("1:",rate_one,"2:",rate_two)
-        converter_one = 1
-        converter_two = 2
+
+        print("1:",type(rate_one),"2:",rate_two)
+        converters = currency.get_currency_converter(currency_set,self.from_curr,self.to_curr)
+        converter =[]
+        for c in converters:
+            converter.append(float(c.replace(',', '.')))
+        converter_one = converter[0]
+        converter_two = converter[1]
     
         self.business_logic.convert(self.money,rate_one,rate_two,converter_one,converter_two)
 

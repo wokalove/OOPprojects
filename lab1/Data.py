@@ -2,8 +2,8 @@ import urllib.request
 import xmltodict
 
 class Connect:
-    def __init__(self,url_link):
-        self.connect = urllib.request.urlopen(url_link)
+    def __init__(self):
+        self.connect = urllib.request.urlopen('https://www.nbp.pl/kursy/xml/lasta.xml')
         
 
 class Parsing:
@@ -15,14 +15,13 @@ class Parsing:
 class CurrencySet:
     def __init__(self,obj):
         self.currency_set = obj.data['tabela_kursow']['pozycja']
-        #print(self.currency_set)
+        
     def get_position(self):
         all_positions = []
         self.len_currency_set = len(self.currency_set)
         for i in range(self.len_currency_set):
             self.result_list = [v for k,v in self.currency_set[i].items()]
-            #all_positions.append(self.result_list)
-            #print(self.result_list)
+        
         return all_positions
     
 class Currency(object):
@@ -65,16 +64,6 @@ class Currency(object):
                from_curr = self.result_list[3]
             if self.result_list[0] == to_curr:
                 to_curr = self.result_list[3]
-        #print(rate)
+        
         rate =  [from_curr,to_curr]
         return rate
-
-'''
-url='https://www.nbp.pl/kursy/xml/lasta.xml'
-
-object1 = Connect(url)
-parsed = Parsing(object1)
-currency_set = CurrencySet(parsed)
-currency = Currency()
-print(currency.get_currency_code(currency_set,'peso filipińskie'))
-'''

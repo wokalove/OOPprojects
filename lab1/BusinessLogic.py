@@ -2,6 +2,17 @@ from Data import *
 
 class Convert(object):
     @staticmethod
+    def get_set():
+        object1 = Connect()
+        parsed = Parsing(object1)
+        currency_set = CurrencySet(parsed)
+        print(currency_set)
+        return currency_set
+    @staticmethod
+    def get_currency():
+        currency = Currency()
+        return currency
+    @staticmethod
     def convert_from_pln(money,avg_exchange_rate,converter):
         converted = money* avg_exchange_rate/converter
         return converted
@@ -17,4 +28,4 @@ class Convert(object):
         return converted_money
 
 
-con = Convert()
+

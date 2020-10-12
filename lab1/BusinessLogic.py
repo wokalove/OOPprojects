@@ -1,13 +1,14 @@
 from Data import *
 
 class Convert(object):
-    @staticmethod
-    def get_set():
-        object1 = Connect()
-        parsed = Parsing(object1)
-        currency_set = CurrencySet(parsed)
-        print(currency_set)
-        return currency_set
+    
+    def __init__(self):
+        self.data = Connect()
+    def get_set(self):
+        self.parsed = Parsing(self.data)
+        self.currency_set = CurrencySet(self.parsed)
+        
+        return self.currency_set
     @staticmethod
     def get_currency():
         currency = Currency()

@@ -1,6 +1,7 @@
 from BusinessLogic import Convert
 from Data import*
 
+
 class UserInterface(object):
     def __init__(self) -> None:
         self.business_logic = Convert()
@@ -24,7 +25,6 @@ class UserInterface(object):
         rate_one = rate[0]
         rate_two = rate[1]
 
-        print("1:",type(rate_one),"2:",rate_two)
         converters = currency.get_currency_converter(currency_set,from_curr,to_curr)
         converter =[]
         for c in converters:
@@ -32,8 +32,8 @@ class UserInterface(object):
         converter_one = converter[0]
         converter_two = converter[1]
     
-        self.business_logic.convert(money,rate_one,rate_two,converter_one,converter_two)
-
+        converted = self.business_logic.convert(money,rate_one,rate_two,converter_one,converter_two)
+        print("Converted in",currency.get_currency_code(currency_set,to_curr)," :",round(converted,2))
 
 def main():
     interface = UserInterface()

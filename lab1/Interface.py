@@ -12,10 +12,11 @@ class UserInterface(object):
         currency = self.business_logic.get_currency()
 
         money = int(input("Enter money amount:"))
-        #self.from_curr = input("From currency:")
-        #self.to_curr = input("To currency:")
-        from_curr = 'peso filipińskie'
-        to_curr = 'frank szwajcarski'
+     
+        #from_curr = 'dolar amerykański'
+        #to_curr = 'dolar Hongkongu'
+        from_curr = input("From currency:")
+        to_curr = input("To currency:")
         
         rates = currency.get_currency_rate(currency_set,from_curr,to_curr)
         

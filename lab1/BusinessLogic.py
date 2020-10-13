@@ -1,14 +1,12 @@
 from Data import *
 
 class Convert(object):
-    
     def __init__(self):
-        self.data = Connect()
+        self.set = CurrencySet()
     def get_set(self):
-        self.parsed = Parsing(self.data)
-        self.currency_set = CurrencySet(self.parsed)
-        
-        return self.currency_set
+        currency_set = self.set.get_parsed()
+        return currency_set
+
     @staticmethod
     def get_currency():
         currency = Currency()
@@ -26,6 +24,5 @@ class Convert(object):
         to_pln = self.convert_to_pln(money, rate_one,converter_one)
         converted_money = self.convert_from_pln(to_pln,rate_two,converter_two)
         return converted_money
-
 
 

@@ -1,5 +1,4 @@
 from BusinessLogic import Convert
-from Data import*
 
 
 class UserInterface(object):
@@ -9,6 +8,7 @@ class UserInterface(object):
     def questions(self):
     
         currency_set = self.business_logic.get_set()
+        length = len(currency_set)
         currency = self.business_logic.get_currency()
 
         money = int(input("Enter money amount:"))
@@ -18,7 +18,7 @@ class UserInterface(object):
         from_curr = input("From currency:")
         to_curr = input("To currency:")
         
-        rates = currency.get_currency_rate(currency_set,from_curr,to_curr)
+        rates = currency.get_currency_rate(currency_set,length,from_curr,to_curr)
         
         rate=[]
         for r in rates:
@@ -26,7 +26,7 @@ class UserInterface(object):
         rate_one = rate[0]
         rate_two = rate[1]
 
-        converters = currency.get_currency_converter(currency_set,from_curr,to_curr)
+        converters = currency.get_currency_converter(currency_set,length,from_curr,to_curr)
         converter =[]
         for c in converters:
             converter.append(float(c.replace(',', '.')))
@@ -34,7 +34,9 @@ class UserInterface(object):
         converter_two = converter[1]
     
         converted = self.business_logic.convert(money,rate_one,rate_two,converter_one,converter_two)
-        print("Converted in",currency.get_currency_code(currency_set,to_curr)," :",round(converted,2))
+        
+        print("Converted to",currency.get_currency_name(currency_set,length,to_curr),
+        currency.get_currency_code(currency_set,length,to_curr)," :",round(converted,2))
 
 def main():
     interface = UserInterface()

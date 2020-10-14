@@ -9,11 +9,12 @@ class IVector:
         y = vector[1][1] - vector[0][1]
         
         x_component = [vector[0],[vector[0][0]+x,vector[0][1]]]
-        #y_component = [vector[0],vector[]]
-        print(x_component)
+        y_component = [vector[0],vector[0][0],vector[0][1]+y]
+        components = [x_component,y_component]
+        #print("X:",x_component,"Y:",y_component)
+        return components
         
-        print(vector[1][1],vector[0][1])
-        '''  '''
+        
     def getAngles(self,vector1,vector2):
         unit_vector1 = vector1 / np.linalg.norm(vector1)
         unit_vector2 = vector2 / np.linalg.norm(vector2)
@@ -32,8 +33,8 @@ class Vector2D:
      #   ''' '''
 
 ob =  IVector()
-v1 = [[-1.2,-3.0],[-1.2,-3.1]]
-#v1 = [[3,1.0],[4.0,2.0]]
+#v1 = [[-1.2,-3.0],[-1.2,-3.1]]
+v1 = [[3,1.0],[4.0,2.0]]
 v2 = [[-4,6],[-1.2,-3.0]]
 #print("Abs:",ob.abs(v1))
 #print(ob.cdot(v1,v2))

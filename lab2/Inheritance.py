@@ -1,6 +1,6 @@
-#import numpy as np
 from abc import ABCMeta, abstractmethod
 import math
+import numpy as np
 
 class IVector:
     __metaclass__ = ABCMeta
@@ -38,7 +38,8 @@ class Vector2D(IVector):
         return angle
 
     def cdot(self, vector):
-        pass
+        dot_product = self._x *vector._x + self._y*vector._y
+        return dot_product
         
 class Vector3D(Vector2D):
    def __init__(self,x,y,z):
@@ -54,11 +55,19 @@ class Vector3D(Vector2D):
        cos = (self._x *ox[0]+self._y*ox[1]+self.__z*ox[2])/self.Abs()*ox_abs
        angle = math.degrees(math.acos(cos))
        return angle
+   def cdot(self, vector):
+       dot_product = self._x *vector._x + self._y*vector._y +self.__z *vector.__z
+       return dot_product
 
+v2= Vector2D(1,1)
+v2_2 = Vector2D(1,2)
 
-ob = Vector2D(1,1)
-print(ob.Abs())
-print(ob.getAngles())
+print(v2.Abs())
+print(v2.getAngles())
 
-ob1= Vector3D(1,3,5)
-print(ob1.getAngles())
+print("DOOOt",v2.cdot(v2_2))
+
+v3= Vector3D(1,3,5)
+v3_2 =Vector3D(1,2,7)
+print(v3.getAngles())
+print(v3.cdot(v3_2))

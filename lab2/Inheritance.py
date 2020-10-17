@@ -29,11 +29,10 @@ class Vector2D(IVector):
        return[self._x,self._y]
         
     def getAngles(self):
-        ox = [self._x,0]
-
-        abs_ox = math.sqrt(pow(ox[0],2)+pow(ox[1],2))
-
-        cos = (self._x*ox[0] + self._y*ox[1])/self.Abs()*abs_ox
+        ox = Vector2D(self._x,0)
+        abs_ox = ox.Abs()
+        
+        cos = (self._x*ox._x + self._y*ox._y)/self.Abs()*abs_ox
         angle = math.degrees(math.acos(cos))
         return angle
 
@@ -50,9 +49,10 @@ class Vector3D(Vector2D):
    def getComponents(self):
        return[self._x,self._y,self.__z]
    def getAngles(self):
-       ox = [self._x,0,0]
-       ox_abs = math.sqrt(pow(ox[0],2)+pow(ox[1],2)+pow(ox[2],2))
-       cos = (self._x *ox[0]+self._y*ox[1]+self.__z*ox[2])/self.Abs()*ox_abs
+       ox = Vector3D(self._x,0,0)
+       ox_abs = ox.Abs()
+       
+       cos = (self._x *ox._x+self._y*ox._y+self.__z*ox.__z)/self.Abs()*ox_abs
        angle = math.degrees(math.acos(cos))
        return angle
    def cdot(self, vector):

@@ -31,7 +31,7 @@ class Vector2D(IVector):
     def getAngles(self):
         ox = Vector2D(self._x,0)
         abs_ox = ox.Abs()
-        
+
         cos = (self._x*ox._x + self._y*ox._y)/self.Abs()*abs_ox
         angle = math.degrees(math.acos(cos))
         return angle
@@ -58,6 +58,23 @@ class Vector3D(Vector2D):
    def cdot(self, vector):
        dot_product = self._x *vector._x + self._y*vector._y +self.__z *vector.__z
        return dot_product
+
+class VectorDecorator(IVector):
+    __metaclass__ = ABCMeta
+    def __init__(self,vector):
+        self.__vector = vector
+    @abstractmethod
+    def Abs(self):
+        return self.__vector.Abs()
+    @abstractmethod
+    def getComponents(self):
+        return self.__vector.getComponents()
+    @abstractmethod
+    def getAngles(self):
+        return self.__vector.getAngles
+    @abstractmethod
+    def cdot(self):
+        return self.__vector.cdot()
 
 v2= Vector2D(1,1)
 v2_2 = Vector2D(1,2)

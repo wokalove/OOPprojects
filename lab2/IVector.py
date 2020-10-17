@@ -1,57 +1,64 @@
-import numpy as np
+#import numpy as np
 from abc import ABCMeta, abstractmethod
+import math
 
 class IVector:
     __metaclass__ = ABCMeta
-    
-    #@abstractmethod
-    def Abs(self,vector):
-        vector_abs = np.absolute(vector)
-        return vector_abs
-    #@abstractmethod
-    def getComponents(self, vector):
-        x = vector[1][0] - vector[0][0]
-        y = vector[1][1] - vector[0][1]
-        
-        x_component = [vector[0],[vector[0][0]+x,vector[0][1]]]
-        y_component = [vector[0],vector[0][0],vector[0][1]+y]
-        components = [x_component,y_component]
-        #print("X:",x_component,"Y:",y_component)
-        return components
-        
-    #@abstractmethod
-    def getAngles(self,vector1,vector2):
-        unit_vector1 = vector1 / np.linalg.norm(vector1)
-        unit_vector2 = vector2 / np.linalg.norm(vector2)
-        dot_product = np.dot(unit_vector1, unit_vector2)
-        angle = np.arccos(dot_product)
-        return angle
-    #@abstractmethod
-    def cdot(self, vector1,vector2):
-        dot_product = np.dot(vector1, vector2)
-        return dot_product
-    #@abstractmethod
-    def hello(self):
-        print("hello")
-    
+    @abstractmethod
+    def Abs(self):
+        pass
+    @abstractmethod
+    def getComponents(self):
+        pass
+    @abstractmethod
+    def getAngles(self):
+        pass
+    @abstractmethod
+    def cdot(self):
+        pass
+ 
 class Vector2D(IVector):
     def __init__(self,x,y):
-        self.__x = x
-        self.__y = y
-    def hello(self):
-        print("Hi there")
+        self._x = x
+        self._y = y
+        
+    def Abs(self):
+        return math.sqrt(pow(self._x,2)+pow(self._y,2))
+        
+    def getComponents(self):
+       return[self._x,self._y]
+        
+    def getAngles(self):
+        ox = [self._x,0]
+
+        abs_ox = math.sqrt(pow(ox[0],2)+pow(ox[1],2))
+
+        cos = (self._x*ox[0] + self._y*ox[1])/self.Abs()*abs_ox
+        angle = math.degrees(math.acos(cos))
+        return angle
+
+    def cdot(self, vector):
+        pass
+        
 class Vector3D(Vector2D):
-   # def __init__(self):
-        ''' '''
+   def __init__(self,x,y,z):
+        Vector2D.__init__(self,x,y)
+        self.__z = z
+   def Abs(self):
+       return math.sqrt(pow(self._x,2)+pow(self._y,2)+pow(self.__z,2))
+   def getComponents(self):
+       return[self._x,self._y,self.__z]
+   def getAngles(self):
+       ox = [self._x,0,0]
+       ox_abs = math.sqrt(pow(ox[0],2)+pow(ox[1],2)+pow(ox[2],2))
+       cos = (self._x *ox[0]+self._y*ox[1]+self.__z*ox[2])/self.Abs()*ox_abs
+       angle = math.degrees(math.acos(cos))
+       return angle
 
-ob =  IVector()
-#v1 = [[-1.2,-3.0],[-1.2,-3.1]]
-v1 = [[3,1.0],[4.0,2.0]]
-v2 = [[-4,6],[-1.2,-3.0]]
-#print("Abs:",ob.abs(v1))
-#print(ob.cdot(v1,v2))
 
-vector_2d = Vector2D(2,3)
-print("Ang:",vector_2d.hello())
-print(ob.getAngles(v1,v2))
-print(ob.getComponents(v1))
+ob = Vector2D(1,1)
+print(ob.Abs())
+print(ob.getAngles())
+
+ob1= Vector3D(1,3,5)
+print(ob1.getAngles())

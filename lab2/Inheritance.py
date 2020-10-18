@@ -39,6 +39,10 @@ class Vector2D(IVector):
     def cdot(self, vector):
         dot_product = self._x *vector._x + self._y*vector._y
         return dot_product
+    def from_polar_to_cartesian(self):
+        x = self.Abs()*math.cos(self.getAngles())
+        y = self.Abs()*math.sin(self.getAngles())
+        return [x,y]
         
 class Vector3D(Vector2D):
    def __init__(self,x,y,z):
@@ -46,8 +50,10 @@ class Vector3D(Vector2D):
         self.__z = z
    def Abs(self):
        return math.sqrt(pow(self._x,2)+pow(self._y,2)+pow(self.__z,2))
+
    def getComponents(self):
        return[self._x,self._y,self.__z]
+
    def getAngles(self):
        ox = Vector3D(self._x,0,0)
        ox_abs = ox.Abs()
@@ -55,15 +61,23 @@ class Vector3D(Vector2D):
        cos = (self._x *ox._x+self._y*ox._y+self.__z*ox.__z)/self.Abs()*ox_abs
        angle = math.degrees(math.acos(cos))
        return angle
+
    def cdot(self, vector):
        dot_product = self._x *vector._x + self._y*vector._y +self.__z *vector.__z
        return dot_product
+
    def cross_product(self,vector):
        x = self._y*vector.__z - (self.__z*vector._y)
        y = self.__z *vector._x - (self._x *vector.__z)
        z = self._x*vector._y - (self._y *vector._x)
        new_vector = [x,y,z]
        return new_vector
+       
+   def spherical_coordinates(self):
+       x = self.Abs()* math.cos(pow(self.getAngles(),2))
+       y = self.Abs()*math.cos(self.getAngles())*math.sin(self.getAngles())
+       z = self.Abs()* math.sin(self.getAngles)
+       return [x,y,z]
 '''class VectorDecorator(IVector):
     __metaclass__ = ABCMeta
     def __init__(self,vector):

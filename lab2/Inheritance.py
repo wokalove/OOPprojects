@@ -82,22 +82,20 @@ class Vector3D(Vector2D):
        return new_vector
 
 class Adapter2D:
-    '''def __init__(self,angle,r):
+    #def __init__(self,angle,r):
     def from_polar_to_cartesian(self):
-        x = self.Abs()*math.cos(self.getAngles())
-        y = self.Abs()*math.sin(self.getAngles())
-        return [x,y]'''
+        x = r*math.cos(angle)
+        y = r*math.sin(angle)
+        return [x,y]
 
    
 class Adapter3D:
-    '''
-    def spherical_coordinates(self):
-       fi,psi = self.getAngles()
-       r = self.Abs()
+    
+    def spherical_coordinates(self,fi,psi,r):
        x = r* math.cos(psi)*math.cos(fi)
        y = r*math.cos(psi)*math.sin(fi)
        z = r* math.sin(psi)
-       return [x,y,z]'''
+       return [x,y,z]
 
 
 

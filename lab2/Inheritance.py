@@ -72,7 +72,7 @@ class Vector3D(Vector2D):
        z = self._x*vector._y - (self._y *vector._x)
        new_vector = [x,y,z]
        return new_vector
-       
+
    def spherical_coordinates(self):
        x = self.Abs()* math.cos(pow(self.getAngles(),2))
        y = self.Abs()*math.cos(self.getAngles())*math.sin(self.getAngles())

@@ -14,7 +14,7 @@ class IVector:
     def getAngles(self):
         pass
     @abstractmethod
-    def cdot(self):
+    def cdot(self,vector):
         pass
  
 class Vector2D(IVector):
@@ -76,7 +76,8 @@ class Vector3D(Vector2D):
        x_p = y*z_v - (self.__z*y_v)
        y_p = self.__z *x_v - (x *z_v)
        z_p = x*y_v - (y *x_v)
-       new_vector = [round(x_p,2),round(y_p,2),round(z_p,2)]
+       
+       new_vector = Vector3D(round(x_p,2),round(y_p,2),round(z_p,2))
 
        
        return new_vector
@@ -93,7 +94,8 @@ class Adapter2D(VectorAdapter2D):
     def from_polar_to_cartesian(self):
         x = self.r*math.cos(math.radians(self.angle))
         y = self.r*math.sin(math.radians(self.angle))
-        return [round(x,2),round(y,2)]
+        vector = Vector2D(round(x,2),round(y,2))
+        return vector
 
    
 class VectorAdapter3D:
@@ -109,7 +111,8 @@ class Adapter3D(VectorAdapter3D):
        x = self.__r* math.sin(math.radians(self.__psi))*math.cos(math.radians(self.__fi))
        y = self.__r*math.sin(math.radians(self.__psi))*math.sin(math.radians(self.__fi))
        z = self.__r* math.cos(math.radians(self.__psi))
-       return [round(x,2),round(y,2),round(z,2)]
+       vector = Vector3D(round(x,2),round(y,2),round(z,2))
+       return vector
 
 def main():
     v2 = Vector2D(1,1)
@@ -126,13 +129,13 @@ def main():
     print("Components v3:",v3.getComponents(),"| Components v3_2:",v3_2.getComponents())
     print("Angles v3:", v3.getAngles(),"| Angles v3_2:",v3_2.getAngles())
     print("Scalar dot of v3, v3_2:",v3.cdot(v3_2))
-    print("Cross product:",v3.cross_product(v3_2))
+    print("Cross product:",v3.cross_product(v3_2).getComponents())
 
 
     a_2D = Adapter2D(3,30)
-    print("From polar to cartesian:",a_2D.from_polar_to_cartesian())
+    print("From polar to cartesian:",a_2D.from_polar_to_cartesian().getComponents())
     a_3D = Adapter3D(2,30,30)
-    print("From spherical to cartesian:",a_3D.spherical_coordinate_to_polar())
+    print("From spherical to cartesian:",a_3D.spherical_coordinate_to_polar().getComponents())
 
 if __name__ == "__main__":
     main()

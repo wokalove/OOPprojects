@@ -14,7 +14,7 @@ class IVector:
     def getAngles(self):
         pass
     @abstractmethod
-    def cdot(self):
+    def cdot(self,vector):
         pass
  
 class Vector2D(IVector):
@@ -70,18 +70,7 @@ class Vector3D(IVector):
        dot_product = x *x_v + y *y_v +self.__z *z_v
        return round(dot_product,2)
 
-
-   def spherical_coordinates(self):
-       fi,psi = self.getAngles()
-       r = self.Abs()
-       x = r* math.cos(psi)*math.cos(fi)
-       y = r*math.cos(psi)*math.sin(fi)
-       z = r* math.sin(psi)
-       return [x,y,z]
-
 class Decorator(Vector3D):
-    def __init__(self,x,y,z):
-        Vector3D.__init__(self,x,y,z)
     def cross_product(self,vector):
         x,y,z = self.getComponents()
         x_2,y_2,z_2 = vector.getComponents()
@@ -102,7 +91,8 @@ class Adapter2D(VectorAdapter2D):
     def from_polar_to_cartesian(self):
         x = self.r*math.cos(math.radians(self.angle))
         y = self.r*math.sin(math.radians(self.angle))
-        return [round(x,2),round(y,2)]
+        vector = Vector2D(round(x,2),round(y,2))
+        return vector
 
    
 class VectorAdapter3D:
@@ -115,10 +105,11 @@ class Adapter3D(VectorAdapter3D):
         self.__psi = psi
         self.__fi = fi
     def spherical_coordinate_to_polar(self):
-       x = self.__r* math.sin(math.radians(self.__psi))*math.cos(math.radians(self.__fi))
-       y = self.__r*math.sin(math.radians(self.__psi))*math.sin(math.radians(self.__fi))
-       z = self.__r* math.cos(math.radians(self.__psi))
-       return [round(x,2),round(y,2),round(z,2)]
+        x = self.__r* math.sin(math.radians(self.__psi))*math.cos(math.radians(self.__fi))
+        y = self.__r*math.sin(math.radians(self.__psi))*math.sin(math.radians(self.__fi))
+        z = self.__r* math.cos(math.radians(self.__psi))
+        vector = Vector3D(round(x,2),round(y,2),round(z,2))
+        return vector
 
         
 
@@ -143,9 +134,9 @@ def main():
 
 
     a_2D = Adapter2D(3,30)
-    print("From polar to cartesian:",a_2D.from_polar_to_cartesian())
+    print("From polar to cartesian:",a_2D.from_polar_to_cartesian().getComponents())
     a_3D = Adapter3D(2,30,30)
-    print("From spherical to cartesian:",a_3D.spherical_coordinate_to_polar())
+    print("From spherical to cartesian:",a_3D.spherical_coordinate_to_polar().getComponents())
 
 if __name__ == "__main__":
     main()

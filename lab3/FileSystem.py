@@ -1,6 +1,7 @@
 import fs
 from io import StringIO
 from abc import ABCMeta, abstractmethod
+import string
 
 class Node:
     __metaclass__ = ABCMeta
@@ -30,8 +31,17 @@ class Folder(Node):
     def create_tree(self,nodes):
         nodes.tree()
 
-class Proxy:
-    pass
+class CheckName:
+    def check_name(self,file_name):
+        count = file_name.count(".")
+        invalidcharacters= set(string.punctuation)
+        invalidcharacters.remove(".")
+        
+        if any(char  in invalidcharacters  for char in file_name ) or count>=2:
+            print ("invalid")
+        else:
+            print("valid")
+
 class ManageNode(Node):
     def __init__(self):
         self.new = fs.open_fs('mem://')
@@ -47,6 +57,8 @@ obj2 = Folder("folder1")
 new = ManageNode().add_new_node('folder')
 new = ManageNode().add_new_node('olla')
 ManageNode().create_tree()
+
+CheckName().check_name("mojapliczka..")
 #obj2.create_new('mój/kolejny')
 #obj2.print_tree()
 #obj2.create_new('jeden')

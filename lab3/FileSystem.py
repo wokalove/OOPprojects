@@ -16,7 +16,7 @@ class Node:
     def more(self):
         pass
     @abstractmethod
-    def name(self,name):
+    def get_name(self,name):
         pass
 
 class File(Node):
@@ -25,7 +25,7 @@ class File(Node):
         self.data = data
     def more(self):
         print(self.data)
-    def name(self):
+    def get_name(self):
         return self.name
 
 class Folder(Node):
@@ -42,7 +42,7 @@ class Folder(Node):
                 for child in next_node_children:
                     print("     |_",child.name)
         
-    def name(self):
+    def get_name(self):
         return self.name
 
 
@@ -89,7 +89,8 @@ folderB.add_node(fileA)
 
 folderA.create_tree()
 
-CheckName(folderA.name)
+folderA_name = folderA.get_name()
+CheckName(folderA_name)
 
 '''    
 print("from folder1 ")

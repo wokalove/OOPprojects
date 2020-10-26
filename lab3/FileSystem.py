@@ -1,5 +1,3 @@
-import fs
-from io import StringIO
 from abc import ABCMeta, abstractmethod
 import string
 
@@ -16,69 +14,85 @@ class Node:
     def more(self):
         pass
     @abstractmethod
-    def get_name(self,name):
+    def get_name(self):
         pass
+    @abstractmethod
+    def check_name(self,name,type_of, data = None):
+        pass
+
 
 class File(Node):
     def __init__(self,name,data):
-        self.name = name
-        self.data = data
+        self.__name = name
+        self.__data = data
+        
     def more(self):
-        print(self.data)
+        print(self.__data)
+
     def get_name(self):
-        return self.name
+        return self.__name
 
 class Folder(Node):
     def __init__(self,name):
-        self.name = name
-        self.children = []
+        self.__name = name
+        self.__children = []
+
     def create_tree(self):
-        print("", self.name)
+        print("", self.__name)
         children = self.get_children()
         for child in children:
-            print(" |__",child.name)
+            print(" |__",child.get_name())
             next_node_children =  child.get_children()
             if next_node_children !=[]:
                 for child in next_node_children:
-                    print("     |_",child.name)
-        
+                    print("     |_",child.get_name())
     def get_name(self):
-        return self.name
-
+        return self.__name
 
     def ls(self):
-        pass
+        children = self.get_children()
+        for child in children:
+            print(child.get_name())
+        
     def add_node(self,node):
-        self.children.append(node)
+        self.__children.append(node)
+            
     def remove_node(self,node):
-        self.children.remove(node)
+        node_children = node.get_children()
+        if node_children == []:
+            self.__children.remove(node)
+        else:
+            node_children.clear()
+            self.__children.remove(node)
+
     def get_children(self):
-        return self.children
-
-
+        return self.__children
 
 class CheckName(Node):
-    def __init__(self,node):
-        self.node = node
-        self.check_name(node)
-    def check_name(self,name):
+    def check_name(self,name,type_of, data = None):
         count = name.count(".")
         invalidcharacters= set(string.punctuation)
         invalidcharacters.remove(".")
         
         if any(char  in invalidcharacters  for char in name ) or count>=2:
-            print ("Name of " ,name, " is invalid!")
+            print ("Name of " ,name, " is invalid! Can't create object.")
+            return 0
         else:
             print ("Name of " ,name, " is valid!")
+            if type_of == 'file':
+                return File(name,data)
+            else:
+                return Folder(name)
+            
 
 
 
-
-folderA = Folder('A...')
-folderB = Folder('B')
-folderC = Folder('C')
-folderD = Folder ('D')
-fileA = File("fileA","data1")
+folderA = CheckName().check_name('A', 'folder')
+folderB = CheckName().check_name('B', 'folder')
+folderC = CheckName().check_name('C', 'folder')
+folderD = CheckName().check_name('D', 'folder')
+folderE = CheckName().check_name('D...', 'folder')
+fileA = CheckName().check_name('fileA', 'file','some data in fileA')
 
 
 folderA.add_node(folderB)
@@ -86,18 +100,20 @@ folderA.add_node(folderC)
 folderB.add_node(folderD)
 folderB.add_node(fileA)
 
-
+print("All added folders and files:")
 folderA.create_tree()
 
-folderA_name = folderA.get_name()
-CheckName(folderA_name)
+print("Ls command on folder",folderA.get_name(),":")
+folderA.ls()
 
-'''    
-print("from folder1 ")
-for i in folder1.children:
-    print(i.name)
-print("from folder2")
-for i in folder2.children: 
-    print(i.name)
-'''
+folderA.remove_node(folderB)
+
+print("After removing folder B:")
+folderA.create_tree()
+
+print("Ls command on folder",folderA.get_name(),":")
+
+folderA.ls()
+
+
 

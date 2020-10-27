@@ -92,7 +92,7 @@ folderB = CheckName().check_name('B', 'folder')
 folderC = CheckName().check_name('C', 'folder')
 folderD = CheckName().check_name('D', 'folder')
 folderE = CheckName().check_name('D...', 'folder')
-fileA = CheckName().check_name('fileA', 'file','some data in fileA')
+fileA = CheckName().check_name('fileA.txt', 'file','some data in fileA')
 
 
 folderA.add_node(folderB)

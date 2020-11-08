@@ -1,71 +1,46 @@
-class Tree():
-    def __init__(self,root):
-        self.root = root
-        self.children = []
-        self.Nodes=[]
-    def addNode(self,obj):
-        self.children.append(obj)
+class Iterator:
+  def __init__(self, value):
+    self.value = value
+    self.children = []
 
-    def __iter__(self):
-        return self
+  def __iter__(self):
+      self.index = 0
+      return self
+  def __next__(self):
+      if self.index<0 or self.index>len(self.children)-1:
+          raise StopIteration
+      else:
+          result = self.children[self.index]
+          self.index+=1
+          return result
 
-    def __next__(self):
-        x =self.children
-        x+=1
-        return x
-
-    def print_all(self):
-        print(self.root)
-        for c in self.children:
-            print("--",c.data)
-            if c.children ==[]:
+  def print_all(self):
+      print(self.value)
+      for c in self:
+          print("--",c.value)
+          if c.children ==[]:
                 continue
-            else:
-                print("  --",c.children)
+          else:
+              for cc in c.children:
+                  print("  --",cc.value)
+  def append_node(self,obj):
+      self.children.append(obj)
+  def print_tree(self):
+      print(self.value)
 
-    def print_tree(self,low,high):
-        current = low
-        while current < high:
-            yield current
-            current += 1
-                
-        '''for c in iterator(3, 9):
-            print(c)
-        '''
-class Node():
-    def __init__(self, data):
-        self.data = data
-        self.children = []
-    def addNode(self,obj):
-        self.children.append(obj)
-    def get_data(self):
-        return self.data
-    def getChildNodes(self,Tree):
-        for child in self.children:
-            if child.children:
-                child.getChildNodes(Tree)
-                Tree.append(child.data)
-            else:
-                Tree.append(child.data)
+obj = Iterator(3)
+obj.append_node(Iterator(2))
+obj.append_node(Iterator(4))
+obj.append_node(Iterator(5))
+obj.children[0].append_node(Iterator(2))
+
+obj.print_all()
+
+'''
+for c in obj:
+    print("Printuję obiekty",c.value)
 
 
-class Flyweight:
-    def search(self,item):
-        pass
-
-
-n = Tree("Iza")
-p = Tree('Kasia')
-q = Tree('Antoni')
-n.addNode(Node("Kowalska"))
-n.addNode(Node("Nowak"))
-
-n.children[0].addNode(Node(1029))
-n.children[1].addNode(Node(1234))
-#n.getAllNodes()
-print(n.children[0])
-
-n.print_all()
-
-myiter = iter(n)
-print(next(myiter))
+for c in obj.children[0]:
+    print("Printuję obiekty dziecka",c)
+'''

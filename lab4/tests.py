@@ -32,7 +32,7 @@ class Tree:
   def append_node(self,obj):
       self.children.append(obj)
 
-  def remove_node(self,name,surname,id_number,name_id,surname_id):
+  def remove_node(self,name_id,surname_id):
       print(name_id,surname_id)
       del self.children[name_id].children[surname_id]
     
@@ -120,7 +120,7 @@ class Flyweight(Tree):
         if(action =="add"):
             self.add_new_person(if_exists,name,surname,id_number,name_index)
         elif(action =="remove"):
-            self.remove_node(name,surname,id_number, name_index,surname_index)
+            self.remove_node(name_index,surname_index)
 
 
 

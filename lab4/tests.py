@@ -45,52 +45,55 @@ class Flyweight(Tree):
     def __init__(self,root):
         self.children = root.get_children()
 
-    def add_name(self, if_exists,name,surname,id_number):
+    def add_non_exist_name(self, if_exists,name,surname,id_number):
         self.append_node(Tree(name))
-        self.add_surname(if_exists,surname,id_number)
-
-    def add_surname(self,if_exists,surname,id_number):
+        
         last_node = len(self.children)-1
         self.children[last_node].append_node(Tree(surname))
-        self.add_id(if_exists,id_number)
 
-    def add_id(self,if_exists,id_number):
         last_node = len(self.children)-1
         self.children[last_node].children[0].append_node(Tree(id_number))
 
-    def check(self,if_exists,name,surname,id_number):
+    def add_exist_name(self,name,surname,id_number,name_index):
+        child_index=0
+        for i in self.children[name_index]:
+            child_index+=1
+        
+        self.children[name_index].append_node(Tree(surname))
+
+        self.children[name_index].children[child_index].append_node(Tree(id_number))
+
+
+    def check(self,if_exists,name,surname,id_number,name_index):
         print(if_exists)
         if if_exists[2]==True:
             print("Can't create object with the same id!")
             return 0
-
-        if if_exists[0] == False:
-            self.add_name(if_exists,name,surname,id_number)
         else:
-            self.add_surname(if_exists,surname,id_number)
+            if if_exists[0] == False:
+                self.add_non_exist_name(if_exists,name,surname,id_number)
+            else:
+                self.add_exist_name(name,surname,id_number,name_index)
 
-        if if_exists[1] == False:
-            self.add_surname(if_exists,surname,id_number)
-        else:
-            pass
 
-        if if_exists[2] == False:
-            self.add_id(if_exists,id_number)
-        else:
-            pass
-        
+            
     def search_tree(self,name, surname, id_number):
+        name_index = None
+        
+        name_bool = False
+        surname_bool =False
+        id_number_bool =False
+
         for c in self:
             if c.value == name:
                 print("Name",c.value, "exists in tree!")
                 name_bool = True
-            else:
-                name_bool= False
+                name_index = self.children.index(c)
+
             if c.children ==[]:
                 continue
             else:
                 for cc in c.children:
-                    surname_bool = False
                     if isinstance(cc.value,list):
                         for c in cc.value:
                             if c == surname:
@@ -110,10 +113,9 @@ class Flyweight(Tree):
                             if ccc.value==id_number:
                                 print("Id",ccc.value, "already exists in tree! Can't create object.")
                                 id_number_bool = True
-                            else:
-                                 id_number_bool = False
         if_exists=[name_bool,surname_bool,id_number_bool]
-        self.check(if_exists,name,surname,id_number)
+        print("Index imienia",name_index)
+        self.check(if_exists,name,surname,id_number,name_index)
 
 
  
@@ -133,7 +135,9 @@ root.print_tree()
 fly = Flyweight(root)
 fly.search_tree("Ania","Górniak",32632721333)
 root.print_tree()
-fly.search_tree("Agnieszka","Była",32632753)
+fly.search_tree("Ania","Była",32632753)
 root.print_tree()
-#root.remove_node("Ania","Górniak",32632753)
-#root.print_tree()
+fly.search_tree("Ania","Kazimierska",326327539999)
+root.print_tree()
+fly.search_tree("Agnieszka",["Kotulska","Misial"],32663733)
+root.print_tree()

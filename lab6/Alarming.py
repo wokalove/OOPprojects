@@ -1,6 +1,7 @@
 import abc
 import enum
 
+#DSP-50
 class ResponseCode(enum.Enum):
     ALARM_OK=1
     TEST_OK=2 
@@ -13,7 +14,7 @@ class IVFDUnit(metaclass=abc.ABCMeta):
 
 
 class VFDUnit(IVFDUnit):
-    def __init__(self, unit,code, alarm):
+    def __init__(self, unit=0,code=0, alarm=0):
         self.__unit_name = unit
         self.__test_code = code 
         self.__alarm_code = alarm

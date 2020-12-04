@@ -44,15 +44,24 @@ class Observer:
     @name.setter
     def name(self,name):
         self.brigade_name = name
+    
+    @property
+    def phone(self):
+        return self.phone_number
+    @phone.setter
+    def phone(self,phone):
+        self.phone_number = phone
+
     def show_observator(self):
         print(self.brigade_name,self.phone_number)
+    
 
 class Subject(Observer):
     def __init__(self):
         self.__observers_collection = []
-
-    def add_observer(self,brigade):
-        self.__observers_collection.append(self)
+    def add_observer(self,brigade)->Observer:
+        self.__brigade = brigade
+        self.__observers_collection.append(brigade)
 
     def remove_observer(self,brigade):
         pass
@@ -66,7 +75,7 @@ class Subject(Observer):
 
     def show_observators(self):
         for observator in self.__observers_collection:
-            print(observator)
+            print("Brigade:",observator.name,"Tel:",observator.phone)
 
 brigade_one = Observer("Fire Brigade in Chicago",881435221)
 brigade_one.show_observator()

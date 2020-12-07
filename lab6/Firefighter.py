@@ -4,31 +4,31 @@ class IFirefighter:
 
 class Firefighter(IFirefighter):
     def __init__(self,name, surname, number):
-        self.__name= name
-        self.__surname = surname
-        self.__phone_number = number
+        self._name= name
+        self._surname = surname
+        self._phone_number = number
 
-    def send_sms(self,content):
+    def send_sms(self):
         print("I am sending SMS to ",self.name,self.surname)
     
     @property
     def name(self):
-        return self.__name
+        return self._name
     @name.setter
     def name(self,name):
-        self.__name = name
+        self._name = name
 
     @property
     def surname(self):
-        return self.__surname
+        return self._surname
     @surname.setter
     def surname(self,surname):
-        self.__surname = surname
+        self._surname = surname
 
     @property
     def phone(self):
-        return self.__phone_number
+        return self._phone_number
     @phone.setter
     def phone(self,phone):
-        self.__phone_number = phone
+        self._phone_number = phone
 

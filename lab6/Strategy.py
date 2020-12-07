@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC,abstractmethod
 from typing import List
 
-from Brigade import Subject
+from Alarming import Subject
 
 class Context:
     def __init__(self,strategy:Strategy)->None:
@@ -23,8 +23,12 @@ class Strategy(ABC):
         pass
 
 class SendToAll(Strategy):
+    def __init__(self,observers):
+        self.__all_brigades = observers
     def do_algorithm(self,observers):
-        observers.notify_all()
+        for obs in observers.get_observators():
+            print("Sending to the ",obs)
+
     
 class SendToOne(Strategy):
     def __init__(self,brigade):

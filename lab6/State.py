@@ -1,13 +1,13 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
-class Context:
+class StateContext:
     _state = None
     def __init__(self,state:State)->None:
         self.change_to(state)
 
     def change_to(self,state:State):
-        print(f"Changing state to: {type(state).__name__}")
+        print(f"Actual state: {type(state).__name__}")
         self._state = state
         self._state.context = self
 
@@ -18,10 +18,10 @@ class Context:
 
 class State(ABC):
     @property
-    def context(self)->Context:
+    def context(self)->StateContext:
         return self._context
     @context.setter
-    def context(self,context:Context)->None:
+    def context(self,context:StateContext)->None:
         self._context = context
     
     @abstractmethod
@@ -31,26 +31,28 @@ class State(ABC):
     @abstractmethod
     def handle_two(self) -> None:
         pass
-class StateA(State):
+class Test(State):
     def handle_one(self)->None:
-        print("StateA handles request_one")
-        print("Changing state of context...")
-        self.context.change_to(StateB())
+        print("Test handles request_one")
+        print("Changing state to Alarm...")
+        self.context.change_to(Alarm())
     def handle_two(self)->None:
-        print("StateA handles request_two")
+        print("Test handles request_two")
 
-class StateB(State):
+class Alarm(State):
     def handle_one(self)->None:
-        print("StateB handles request_one")
+        print("Alarm handles request_one")
     def handle_two(self)->None:
-        print("StateB handles request_two")
-        print("Changing state of context...")
-        self.context.change_to(StateA())
+        print("Alarm handles request_two")
+        print("Changing state to Test..")
+        self.context.change_to(Test())
         
-context = Context(StateA())
+'''
+context = StateContext(Test())
 context.request_one()
-context.request_two()
+
 print("Second:")
-context_second = Context(StateB())
+context_second = StateContext(Alarm())
 context_second.request_two()
-context_second.request_one()
+
+'''

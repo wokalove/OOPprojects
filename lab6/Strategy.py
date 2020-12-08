@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC,abstractmethod
 from typing import List
 
-from Alarming import Subject
+from Alarming import Subject,VFDUnit
 
 class Context:
     def __init__(self,strategy:Strategy)->None:
@@ -22,22 +22,22 @@ class Strategy(ABC):
     def do_algorithm(self,observers):
         pass
 
-class SendToAll(Strategy):
+class SendToAll(Strategy,VFDUnit):
     def __init__(self,observers):
         self.__all_brigades = observers
     def do_algorithm(self,observers):
         for obs in observers.get_observators():
-            print("Sending to the ",obs)
+            print("Sending status to the: ",obs.name)
 
     
-class SendToOne(Strategy):
+class SendToOne(Strategy,VFDUnit):
     def __init__(self,brigade):
         self._brigade = brigade
 
     def do_algorithm(self,observers):
         for obs in observers.get_observators():
             if self._brigade == obs.name:
-                print("Sending to the ",self._brigade)
+                print("Sending status to the:",self._brigade)
 '''
 context = Context(SendToAll())
 context.business_logic()

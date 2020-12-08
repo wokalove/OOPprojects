@@ -16,14 +16,12 @@ class Commander:
         context.business_logic(observers)
 #DTG-53
 class FirefighterSender(Firefighter):
-    def __init__(self):
-        self.__firefighters = []
-    def add(self,firefighter):
-        self.__firefighters.append(self)
+    def __init__(self,firefighters):
+        self.__firefighters = firefighters
 
     def send_to_firefighters(self)->Firefighter:
         for firefighter in self.__firefighters:
-            print("Sending SMS from DTG-53 to:",type(firefighter))
+            print("Sending SMS from DTG-53 to:",firefighter.name,firefighter.surname)
         
 
         
@@ -45,10 +43,12 @@ def main():
     firefighter_three = Firefighter('Kazimierz','Podolak',880778234)
 
     #adding receivers to list
-    sender = FirefighterSender()
-    sender.add(firefighter_one)
-    sender.add(firefighter_two)
-    sender.add(firefighter_three)
+    firefighters = []
+    firefighters.append(firefighter_one)
+    firefighters.append(firefighter_two)
+    firefighters.append(firefighter_three)
+
+    sender = FirefighterSender(firefighters)
 
     #setting alarm
     alarm = StateContext(Test())
@@ -86,7 +86,7 @@ def main():
             print("[SYRENE SOUND] ALARMING!!!")
             sender.send_to_firefighters()
         else:
-            print("No or wrong response from ",brigade, " unit!")
+            print("No or wrong response from ",brigade.name, " unit!")
 
         
         

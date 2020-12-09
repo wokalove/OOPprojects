@@ -58,9 +58,6 @@ class Subject(VFDUnit):
         self.__unit_name = brigade
         self.__observers_collection.append(brigade)
 
-    def remove_observer(self,brigade):
-        pass
-
     def notify_all(self):
         for observer in self.__observers_collection:
             observer.notify()
@@ -71,12 +68,3 @@ class Subject(VFDUnit):
     def show_observators(self):
         for observator in self.__observers_collection:
             print("Brigade:",observator.name,"Test:",observator.test,"Alarm:",observator.alarm)
-'''
-brigade_one= VFDUnit('Fire Brigade in Chicago',2,3)
-brigade_two= VFDUnit('Fire Brigade in Miami',244,3332)
-
-observers_base = Subject()
-observers_base.add_observer(brigade_one)
-observers_base.notify_all()
-
-'''

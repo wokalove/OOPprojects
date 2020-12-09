@@ -38,7 +38,4 @@ class SendToOne(Strategy,VFDUnit):
         for obs in observers.get_observators():
             if self._brigade == obs.name:
                 print("Sending status to the:",self._brigade)
-'''
-context = Context(SendToAll())
-context.business_logic()
-'''
+

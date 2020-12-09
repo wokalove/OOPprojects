@@ -31,6 +31,7 @@ class State(ABC):
     @abstractmethod
     def handle_two(self) -> None:
         pass
+    
 class Test(State):
     def handle_one(self)->None:
         print("Test handles request_one")
@@ -47,12 +48,3 @@ class Alarm(State):
         print("Changing state to Test..")
         self.context.change_to(Test())
         
-'''
-context = StateContext(Test())
-context.request_one()
-
-print("Second:")
-context_second = StateContext(Alarm())
-context_second.request_two()
-
-'''

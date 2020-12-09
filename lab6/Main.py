@@ -48,7 +48,6 @@ def main():
     firefighters.append(firefighter_two)
     firefighters.append(firefighter_three)
 
-    sender = FirefighterSender(firefighters)
 
     #setting alarm
     alarm = StateContext(Test())
@@ -63,6 +62,7 @@ def main():
     #alarm signal, notifying firefighters
     if brigade_response != ResponseCode.ERROR:
         print("[SYRENE SOUND] ALARMING!!!")
+        sender = FirefighterSender(firefighters)
         sender.send_to_firefighters()
     else:
         print("No or wrong response from ",brigade_one, " unit!")
@@ -82,6 +82,7 @@ def main():
     for brigade in all_brigades:
         random_response = random.choice(random_responses)
         answer = brigade.notify(random_response)
+        #alarm signal
         if answer !=  ResponseCode.ERROR:
             print("[SYRENE SOUND] ALARMING!!!")
             sender.send_to_firefighters()
@@ -90,7 +91,7 @@ def main():
 
         
         
-    #alarm signal
+    
 
 if __name__ == "__main__":
     main()

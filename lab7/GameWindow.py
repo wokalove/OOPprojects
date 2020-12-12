@@ -1,15 +1,27 @@
 import pygame
+import pygame_menu
 
 pygame.init()
-screen = pygame.display.set_mode((800,600))
-running = True
+surface = pygame.display.set_mode((800, 600))
 
-pygame.display.set_caption("Ancient")
-#Game loop
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+
+def new_the_game():
+    # Do the job here !
+    menu.add_text_input('Name :', default='')
     
-    screen.fill((89, 86, 76))
-    pygame.display.update()
+    
+def read_the_game():
+    # Do the job here !
+    pass
+menu = pygame_menu.Menu(600, 800, 'Welcome',
+                       theme=pygame_menu.themes.THEME_BLUE)
+
+
+menu.add_button('New game', new_the_game)
+menu.add_button('Read game', read_the_game)
+menu.add_button('Quit', pygame_menu.events.EXIT)
+
+
+
+
+menu.mainloop(surface)

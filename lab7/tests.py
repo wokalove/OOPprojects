@@ -1,48 +1,45 @@
-import pygame
-import sys
-import os
-from pygame.locals import *
+import pygame as pg
 
-pygame.init() # initialize pygame
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((600,500))
+# initialize pygame
+pg.init()
 
-# os.path.join properly forms a cross-platform relative path
-# by joining directory names
+# use an image you have (.bmp  .jpg  .png  .gif)
+image_file = "Mint.png"
 
-bg =  pygame.image.load(r'C:\GitRepo\Object_Oriented_Techniques\lab7\img\mapa.jpg').convert()
+# RGB color tuple for screen background
+black = (0,0,0)
 
+# screen width and height
+sw = 640
+sh = 480
+# create a screen
+screen = pg.display.set_mode((sw, sh))
+# give the screen a title
+pg.display.set_caption('image follows mouse click position')
 
-pygame.mouse.set_visible(0)
+# load an image
+# convert() unifies the pixel format for faster blit
+image = pg.image.load(r'C:\GitRepo\Object_Oriented_Techniques\lab7\img\Mint.png').convert()
+# get the rectangle the image occupies
+# rec(x, y, w, h)
+start_rect = image.get_rect()
+image_rect = start_rect
 
-ship = pygame.image.load(r'C:\GitRepo\Object_Oriented_Techniques\lab7\img\Mint.png').convert()
-ship_top = screen.get_height() - ship.get_height()
-ship_left = screen.get_width()/2 - ship.get_width()/2
-screen.blit(ship, (ship_left,ship_top))
+running = True
+while running:
+    event = pg.event.poll()
+    keyinput = pg.key.get_pressed()
+    # exit on corner 'x' click or escape key press
+    if keyinput[pg.K_ESCAPE]:
+        raise SystemExit
+    elif event.type == pg.QUIT:
+        running = False
+    elif event.type == pg.MOUSEBUTTONDOWN:
+        image_rect = start_rect.move(event.pos)
 
-shot = pygame.image.load(r'C:\GitRepo\Object_Oriented_Techniques\lab7\img\Mint.png') 
-shoot_y = 0
-
-
-pygame.display.set_caption('galaxy invaders')
-
-# fix indentation
-
-while True:
-    clock.tick(60)
-    screen.blit(bg, (0,0))
-    x,y = pygame.mouse.get_pos()
-    screen.blit(ship, (x-ship.get_width()/2, ship_top))
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-        elif event.type == MOUSEBUTTONDOWN:
-            shoot_y = 500
-            shoot_x = x
-
-    if shoot_y > 0:
-        screen.blit(shot, (shoot_x, shoot_y))
-        shoot_y -= 10
-
-    pygame.display.update()
+    # this erases the old sreen with black
+    screen.fill(black)
+    # put the image on the screen
+    screen.blit(image, image_rect)
+    # update screen
+    pg.display.flip()

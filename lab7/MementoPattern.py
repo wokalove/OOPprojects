@@ -24,6 +24,7 @@ class Originator():
         print(f"Originator: My initial state is: {self._state}")
 
     def do_something(self) -> None:
+    
         """
         The Originator's business logic may affect its internal state.
         Therefore, the client should backup the state before launching methods

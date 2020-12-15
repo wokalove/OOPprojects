@@ -3,6 +3,14 @@ import time
 import threading
 from abc import ABC,abstractmethod
 
+buildings = {
+    "hut": 200,
+    "mint":3000
+
+}
+
+#template method pattern
+
 class Building:
     def __init__(self,name,value):
         self.__name = name
@@ -20,9 +28,13 @@ class Building:
     @value.setter
     def value(self,name):
         self.__value = value
-
+    def template_method(self)->None:
+        self.shape()
+        self.generate_income_periodically()
     @abstractmethod
     def shape(self):
+        pass
+    def generate_income_periodically(self):
         pass
 
 class Mint(Building):
@@ -50,12 +62,14 @@ class Income(Building):
         threading.Timer(10, self.generate_income_periodically).start()
     def build_building(self):
         pass
-        
+
+def call_template_method(abstract_class:Building)->None:
+    abstract_class.template_method()
 
 mint = Mint('Mint',3000)
 mint_income = Income(mint)
-mint.shape()
-#mint_income.generate_income_periodically()
+call_template_method(mint_income)
+
 
 
 

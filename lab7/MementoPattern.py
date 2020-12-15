@@ -5,6 +5,7 @@ from random import sample
 from string import ascii_letters, digits
 
 
+
 class Originator():
     """
     The Originator holds some important state that may change over time. It also

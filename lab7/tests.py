@@ -1,45 +1,45 @@
-import pygame as pg
+import pygame
 
-# initialize pygame
-pg.init()
 
-# use an image you have (.bmp  .jpg  .png  .gif)
-image_file = "Mint.png"
+pygame.init()
+width, height = (200,300)
+screen = pygame.display.set_mode((width, height))
 
-# RGB color tuple for screen background
-black = (0,0,0)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (30, 30, 30)
+FONT = pygame.font.Font("freesansbold.ttf", 50)
 
-# screen width and height
-sw = 640
-sh = 480
-# create a screen
-screen = pg.display.set_mode((sw, sh))
-# give the screen a title
-pg.display.set_caption('image follows mouse click position')
 
-# load an image
-# convert() unifies the pixel format for faster blit
-image = pg.image.load(r'C:\GitRepo\Object_Oriented_Techniques\lab7\img\Mint.png').convert()
-# get the rectangle the image occupies
-# rec(x, y, w, h)
-start_rect = image.get_rect()
-image_rect = start_rect
+def loop():
+    clock = pygame.time.Clock()
+    number = 0
+    # The button is just a rect.
+    button = pygame.Rect(0, 100, 200, 200)
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            # This block is executed once for each MOUSEBUTTONDOWN event.
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # 1 is the left mouse button, 2 is middle, 3 is right.
+                if event.button == 1:
+                    # `event.pos` is the mouse position.
+                    if button.collidepoint(event.pos):
+                        # Increment the number.
+                        number += 1
 
-running = True
-while running:
-    event = pg.event.poll()
-    keyinput = pg.key.get_pressed()
-    # exit on corner 'x' click or escape key press
-    if keyinput[pg.K_ESCAPE]:
-        raise SystemExit
-    elif event.type == pg.QUIT:
-        running = False
-    elif event.type == pg.MOUSEBUTTONDOWN:
-        image_rect = start_rect.move(event.pos)
+        screen.fill(WHITE)
+        pygame.draw.rect(screen, GRAY, button)
+        text_surf = FONT.render(str(number), True, BLACK)
+        # You can pass the center directly to the `get_rect` method.
+        text_rect = text_surf.get_rect(center=(width/2, 30))
+        screen.blit(text_surf, text_rect)
+        pygame.display.update()
 
-    # this erases the old sreen with black
-    screen.fill(black)
-    # put the image on the screen
-    screen.blit(image, image_rect)
-    # update screen
-    pg.display.flip()
+        clock.tick(30)
+
+
+loop()
+pygame.quit()

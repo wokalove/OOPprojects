@@ -14,8 +14,7 @@ class User:
         self.__nickname = nickname
         self.__collection = []
         self._state = [self.__nickname,self.__money]
-
-
+        
     def change_state(self,new_state):
         self._state = new_state
         return self._state

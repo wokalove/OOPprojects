@@ -1,24 +1,9 @@
 import pygame ,sys
 from pygame.locals import *
 from Buildings import *
-
-
+import time
+import threading 
 FOLDER_PATH = r'C:\GitRepo\Object_Oriented_Techniques\lab7\img'
-
-
-class Construction(pygame.sprite.Sprite):
-    def __init__(self,url):
-        pygame.sprite.Sprite.__init__(self)
-
-        load_img = pygame.image.load(url).convert()
-        self.image = pygame.transform.scale(load_img, (200, 100))
-        self.start_rect = self.image.get_rect()
-        self.rectangle = self.start_rect
-
-    def draw(self,window,position):
-        pass
-     
-
 
 class Button:
     def __init__(self,name, image_dir, position):
@@ -51,6 +36,34 @@ def check_status(buttons):
             return [b.name,True]
     return ['',False]
 
+def paused(gameDisplay,buildings, user1):
+
+    pause = 1
+    start_time = time.time()
+    #largeText = pygame.font.SysFont("comicsansms",115)
+    #TextSurf, TextRect = text_objects("Paused", largeText)
+    #TextRect.center = ((display_width/2),(display_height/2))
+    #gameDisplay.blit(TextSurf, TextRect)
+    
+
+    while pause:
+
+
+        display_buildings(gameDisplay,buildings)
+        display_label(gameDisplay,f"Money savings: {user1.money}",(10,10),50)
+
+        for event in pygame.event.get():
+            
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        if (time.time() - start_time) > 1.0:
+            print(time.time() - start_time)
+            pause = 0
+        pygame.display.update()  
+        
+
+
 pygame.init() 
    
 white = (255, 255, 255) 
@@ -59,9 +72,9 @@ Y = 600
 money = 2000
 
 display_surface = pygame.display.set_mode((X, Y )) 
-
 pygame.display.set_caption('Game') 
 
+#Building Buttons
 img_mint_path = FOLDER_PATH + r'\mint.png'
 button1= Button('Mint',img_mint_path,(70,70))
 
@@ -69,16 +82,26 @@ button1= Button('Mint',img_mint_path,(70,70))
 img_hut_path = FOLDER_PATH + r'\hut.png'
 button2= Button('Hut',img_hut_path,(200,70))
 
+img_gold_path = FOLDER_PATH + r'\gold_mine.jpg'
+button3= Button('Gold Mine',img_gold_path,(330,70))
+
+img_quarry_path = FOLDER_PATH + r'\quarry.png'
+button4= Button('Quarry',img_quarry_path,(460,70))
+
+img_sawmill_path = FOLDER_PATH + r'\sawmill.jfif'
+button5= Button('Sawmill',img_sawmill_path,(590,70))
+
+#map
 img_bg_path = FOLDER_PATH + r'\mapa.jpg'
 bg = pygame.image.load(img_bg_path) 
-background = pygame.transform.scale(bg, (800, 600))
+background = pygame.transform.scale(bg, (X, Y))
 
 area = pygame.Rect(0, 170, 800, 450)
 
 user1 = User('Ola')
 buildings =[]
 
-building_buttons = [button1, button2]
+building_buttons = [button1, button2, button3, button4]
 
 no_money =''
 
@@ -88,14 +111,24 @@ while True :
     display_surface.fill(white) 
     display_surface.blit(background, (0, 0)) 
 
+    #display button
     display_surface.blit(button1.image, button1.rect)
-    display_label(background,"Mint",(80,120),30)
+    display_label(background,"Mint",(90,130),30)
 
     display_surface.blit(button2.image, button2.rect)
-    display_label(background,"Hut",(225,120),30)
-    pygame.draw.rect(display_surface, (100, 200, 70), area)
-    
-    display_label(background,no_money,(50,400),3)
+    display_label(background,"Hut",(225,130),30)
+
+    display_surface.blit(button3.image, button3.rect)
+    display_label(background,"Gold Mine",(330,130),30)
+
+    display_surface.blit(button4.image, button4.rect)
+    display_label(background,"Quarry",(480,130),30)
+
+    display_surface.blit(button5.image, button5.rect)
+    display_label(background,"Sawmill",(600,130),30)
+
+    #display map
+    pygame.draw.rect(display_surface, (100, 200, 70), area,-1,-1)
 
     for event in pygame.event.get() :     
         
@@ -105,7 +138,7 @@ while True :
             pygame.quit() 
             quit()
 
-        elif event.type == pygame.MOUSEBUTTONDOWN: #albo up, nie czuje różnicy
+        elif event.type == pygame.MOUSEBUTTONDOWN:
             position = pygame.mouse.get_pos()
             print(position)
             
@@ -131,9 +164,13 @@ while True :
                         user1.money-=price
                         mint_income = Income(building)
                         call_template_method(mint_income)
+                        display_label(display_surface,no_money,(380,15),30)
                     else:
-                        building = None
-                        no_money = "Not enough money"
+                        building = None 
+                        no_money = "Not enough money!"
+                        display_label(display_surface,no_money,(380,15),30)
+                        paused(display_surface, buildings, user1)        
+                        #pygame.time.delay(2000)
                         print(no_money)
 
             
@@ -147,12 +184,14 @@ while True :
                     else:
                         building = None
                         no_money = "Not enough money"
+                        display_label(display_surface,no_money,(380,15),30)
+                        paused(display_surface, buildings, user1) 
                         print(no_money)
 
-                    
+                #TODO reszta budowli i kombo!
                 if building:
                     buildings.append([building.image,position])
-                      
+        
         
         display_buildings(display_surface,buildings)
         display_label(display_surface,f"Money savings: {user1.money}",(10,10),50)
@@ -160,5 +199,5 @@ while True :
             
    
 
-        pygame.display.flip()  
+        pygame.display.update()  
              

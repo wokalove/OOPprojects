@@ -1,5 +1,6 @@
 import pygame ,sys
 from pygame.locals import *
+from Buildings import *
 
 
 FOLDER_PATH = r'C:\GitRepo\Object_Oriented_Techniques\lab7\img'
@@ -20,7 +21,8 @@ class Construction(pygame.sprite.Sprite):
 
 
 class Button:
-    def __init__(self, image_dir, position):
+    def __init__(self,name, image_dir, position):
+        self.name = name
         load_img = pygame.image.load(image_dir).convert()
         self.image = pygame.transform.scale(load_img, (100, 50))
         self.rect = self.image.get_rect(topleft=position)
@@ -32,14 +34,22 @@ class Button:
          
     def display(self):
         display_surface.blit(self.image,self.rect)
- 
+
 
 def display_label(window,label, position,size):
     main_font = pygame.font.SysFont("comicsans",size)
     user_money = main_font.render(label,1,(255,255,255))
     window.blit(user_money,position)
 
+def display_buildings(surface,arr):
+    for a in arr:
+        surface.blit(a[0],a[1])
 
+def check_status(buttons):
+    for b in buttons:
+        if b.clicked == True:
+            return [b.name,True]
+    return ['',False]
 
 pygame.init() 
    
@@ -53,11 +63,11 @@ display_surface = pygame.display.set_mode((X, Y ))
 pygame.display.set_caption('Game') 
 
 img_mint_path = FOLDER_PATH + r'\mint.png'
-button1= Button(img_mint_path,(70,70))
+button1= Button('Mint',img_mint_path,(70,70))
 
 
 img_hut_path = FOLDER_PATH + r'\hut.png'
-button2= Button(img_hut_path,(200,70))
+button2= Button('Hut',img_hut_path,(200,70))
 
 img_bg_path = FOLDER_PATH + r'\mapa.jpg'
 bg = pygame.image.load(img_bg_path) 
@@ -65,27 +75,29 @@ background = pygame.transform.scale(bg, (800, 600))
 
 area = pygame.Rect(0, 170, 800, 450)
 
+user1 = User('Ola')
+buildings =[]
 
-while True : 
+building_buttons = [button1, button2]
+
+no_money =''
+
+while True :
     keyinput = pygame.key.get_pressed()
 
     display_surface.fill(white) 
     display_surface.blit(background, (0, 0)) 
 
-    display_label(background,f"Money savings: {money}",(10,10),50)
-
     display_surface.blit(button1.image, button1.rect)
     display_label(background,"Mint",(80,120),30)
 
-
     display_surface.blit(button2.image, button2.rect)
     display_label(background,"Hut",(225,120),30)
+    pygame.draw.rect(display_surface, (100, 200, 70), area)
     
-    x,y = 0,0
+    display_label(background,no_money,(50,400),3)
 
-    for event in pygame.event.get() : 
-        pygame.draw.rect(display_surface, (100, 200, 70), area)
-        
+    for event in pygame.event.get() :     
         
         if keyinput[pygame.K_ESCAPE]:
             raise SystemExit
@@ -94,44 +106,52 @@ while True :
             quit()
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #albo up, nie czuje różnicy
-            x,y = event.pos
-
-            if button1.rect.collidepoint(x,y):
-                print('clicked on mint')
-                
-                clicked = button1.button_status()
-                print(clicked)
-                if clicked:
-                    print("Mint True")
-                    building = Construction(img_mint_path)
-                    
-                    display_surface.blit(building.image,building.rectangle)
-                    x, y = position
-                    pygame.draw.rect(display_surface,(255,0,0),(150,450,0,0))         
-                    
-        
-            elif button2.rect.collidepoint(x,y):
-                print('Clicked on hut')
-                clicked = button2.button_status()
-                
-                if clicked:
-                    print("True in hut")
-                    position = pygame.mouse.get_pos()
-                    if event.button == 1:  # Left mouse button.                      
-
-                        print("True in hut ==1")
-                        (x, y)= position
-                        if area.collidepoint(position):
-                            print('Area clicked.')
-    
-                            building = Construction(img_hut_path)
-                            
-                            display_surface.blit(building.image,building.rectangle)
-                            x, y = position
-                            pygame.draw.rect(display_surface,(255,0,0),(150,450,0,0))         
-                            
-            
+            position = pygame.mouse.get_pos()
             print(position)
+            
+            for button in building_buttons:
+                if button.rect.collidepoint(position):
+                    print('clicked on:',button.name)
+                    for button_i in building_buttons:
+                        if button == button_i:
+                            continue
+                        if button_i.clicked == True:
+                            button_i.clicked = False
+
+                    clicked = button.button_status()
+            
+            clicked_building = check_status(building_buttons)
+            if clicked_building[1] and area.collidepoint(position):
+
+                if clicked_building[0] == "Mint":
+                    price = 3000
+                    
+                    building = Mint('Mint',price,img_mint_path)
+                    if user1.buy_building(building):
+                        user1.money-=price
+                        mint_income = Income(building)
+                        call_template_method(mint_income)
+                    else:
+                        no_money = "Not enough money"
+                        print(no_money)
+
+            
+                elif clicked_building[0] == "Hut":
+                    price =200
+
+                    building = Hut('Hut',price,img_hut_path)
+                    if user1.buy_building(building):
+                        user1.money-=price
+                        mint_income = Income(building)
+                        call_template_method(mint_income)
+                    
+                buildings.append([building.image,position])
+                      
+        
+        display_buildings(display_surface,buildings)
+        display_label(display_surface,f"Money savings: {user1.money}",(10,10),50)
+            
+            
    
 
         pygame.display.flip()  

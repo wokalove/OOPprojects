@@ -2,19 +2,21 @@ import random
 import time
 import threading
 from abc import ABC,abstractmethod
+import pygame 
+from User import *
 
-buildings = {
-    "hut": 200,
-    "mint":3000
+FOLDER_PATH = r'C:\GitRepo\Object_Oriented_Techniques\lab7\img'
 
-}
-
-#template method pattern
-
-class Building:
-    def __init__(self,name,value):
+class Building(pygame.sprite.Sprite):
+    def __init__(self,name,value, url):
+        pygame.sprite.Sprite.__init__(self)
         self.__name = name
-        self.__value = value    
+        self.__value = value
+
+        load_img = pygame.image.load(url).convert()
+        self.image = pygame.transform.scale(load_img, (200, 100))
+        self.start_rect = self.image.get_rect()
+        self.rectangle = self.start_rect    
     @property
     def name(self):
         return self.__name
@@ -38,14 +40,14 @@ class Building:
         pass
 
 class Mint(Building):
-    def __init__(self,name,value):
-        super().__init__(name,value)
+    def __init__(self,name,value,url):
+        super().__init__(name,value,url)
     def shape(self):
         print("Kształt mennicy")
 
 class Hut(Building):
-    def __init__(self,name,value):
-        super().__init__(name,value)
+    def __init__(self,name,value,url):
+        super().__init__(name,value,url)
     def shape(self):
         print("Kształt chatki")
 
@@ -59,6 +61,7 @@ class Income(Building):
         self.__general_income+=self.__building.value
         print("All generated income by ",self.__building.name,":",self.__general_income)
 
+
         threading.Timer(10, self.generate_income_periodically).start()
     def build_building(self):
         pass
@@ -66,9 +69,12 @@ class Income(Building):
 def call_template_method(abstract_class:Building)->None:
     abstract_class.template_method()
 
-mint = Mint('Mint',3000)
+'''
+img_mint_path = FOLDER_PATH + r'\mint.png'
+mint = Mint('Mint',3000,img_mint_path)
 mint_income = Income(mint)
-call_template_method(mint_income)
+'''
+#call_template_method(mint_income)
 
 
 

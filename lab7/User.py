@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from random import sample
 from string import ascii_letters, digits
-
-from Buildings import Building, Mint, Hut
+from Buildings import *
 
 #memento pattern
 class User:
@@ -42,6 +41,7 @@ class User:
         
         if(self.__money < building.value):
             print("You can't buy building!")
+            return 0
         else:
             self.__money-=building.value
             print("You bought",building.name)
@@ -50,8 +50,7 @@ class User:
             
             
             print("Your savings:",self.__money)
-            
-            
+                       
 
     def check_principle(self)->Building:
         counter = 0
@@ -130,7 +129,7 @@ class Caretaker():
         print("Caretaker: Here's the list of mementos:")
         for memento in self._mementos:
             print(memento.get_name())
-
+'''
 user1 = User('Ola')
 caretaker = Caretaker(user1)
 
@@ -150,7 +149,6 @@ hut = Mint("Mint",200)
 user1.buy_building(hut)
 
 caretaker.show_history()
-'''
 mint = Mint('Mint',3000)
 hut = Hut("Hut",200)
 user1.buy_building(mint)

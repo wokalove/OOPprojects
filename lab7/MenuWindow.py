@@ -79,8 +79,7 @@ def play_function( font, test=False):
         # Pass events to main_menu
         text_input = main_menu.add_text_input('My name: ', default='')
         main_menu.update(events)
-        
-        
+
 
         # Continue playing
         surface.fill(bg_color)
@@ -137,8 +136,7 @@ def main(test=False):
         title='Game Menu',
         width=WINDOW_SIZE[0] * 0.9,
     )
-    game_menu.add_text_input('First name: ', default='John')
-    game_menu.add_button("Play new game",pygame_menu.events.EXIT)
+    
 
     # -------------------------------------------------------------------------
     # Create menus: Play Menu

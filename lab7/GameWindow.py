@@ -126,26 +126,32 @@ while True :
                 if clicked_building[0] == "Mint":
                     price = 3000
                     
-                    building = Mint('Mint',price,img_mint_path)
-                    if user1.buy_building(building):
+                    if user1.buy_building(clicked_building[0]):
+                        building = Mint('Mint',price,img_mint_path)
                         user1.money-=price
                         mint_income = Income(building)
                         call_template_method(mint_income)
                     else:
+                        building = None
                         no_money = "Not enough money"
                         print(no_money)
 
             
                 elif clicked_building[0] == "Hut":
-                    price =200
-
-                    building = Hut('Hut',price,img_hut_path)
-                    if user1.buy_building(building):
-                        user1.money-=price
+                    price = 200
+                    if user1.buy_building(clicked_building[0]):
+                        building = Hut('Hut',price,img_hut_path)
+                        user1.money-= price
                         mint_income = Income(building)
                         call_template_method(mint_income)
+                    else:
+                        building = None
+                        no_money = "Not enough money"
+                        print(no_money)
+
                     
-                buildings.append([building.image,position])
+                if building:
+                    buildings.append([building.image,position])
                       
         
         display_buildings(display_surface,buildings)

@@ -37,20 +37,19 @@ class User:
     def get_collection(self):
         return self.__collection
 
-    def buy_building(self,building:Building)->None:
-        
-        if(self.__money < building.value):
-            print("You can't buy building!")
-            return 0
-        else:
-            self.__money-=building.value
-            print("You bought",building.name)
-            self.__collection.append(building)
-            state = self.change_state(self.__collection)
-            
-            
-            print("Your savings:",self.__money)
-                       
+    def buy_building(self,building)->None:
+        price_list = {
+            'Mint':3000,
+            'Hut':200
+        }
+
+        for key, val in price_list.items():
+            if key == building:
+                print("key:",key)
+                if self.__money < val:
+                    return 0
+                else:
+                    return 1
 
     def check_principle(self)->Building:
         counter = 0

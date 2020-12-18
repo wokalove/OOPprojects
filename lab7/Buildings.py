@@ -41,15 +41,35 @@ class Building(pygame.sprite.Sprite):
 
 class Mint(Building):
     def __init__(self,name,value,url):
-        super().__init__(name,value,url)
-    def shape(self):
-        print("Kształt mennicy")
+        img_mint_path = FOLDER_PATH + r'\mint.png'
+        self.url = img_mint_path
+        super().__init__(name,value,self.url)
+
 
 class Hut(Building):
-    def __init__(self,name,value,url):
-        super().__init__(name,value,url)
-    def shape(self):
-        print("Kształt chatki")
+    def __init__(self,name,value):
+        img_hut_path = FOLDER_PATH + r'\hut.jpg'
+        self.url =img_hut_path
+        super().__init__(name,value,self.url)
+   
+
+class GoldMine(Building):
+    def __init__(self,name,value):
+        img_gold_path = FOLDER_PATH + r'\gold_mine.jpg'
+        self.url = img_gold_path
+        super().__init__(name,value,self.url)
+   
+class Quarry(Building):
+    def __init__(self,name,value):
+        img_quarry_path = FOLDER_PATH + r'\quarry.jpg'
+        self.url = img_quarry_path
+        super().__init__(name,value,self.url)
+
+class Sawmill(Building):
+    def __init__(self,name,value):
+        img_sawmill_path = FOLDER_PATH + r'\sawmill.jfif'
+        self.url = img_sawmill_path
+        super().__init__(name,value,self.url)
 
 class Income(Building):
     def __init__(self,building):

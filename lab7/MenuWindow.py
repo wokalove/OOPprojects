@@ -9,6 +9,7 @@ import pygame_menu
 
 from random import randrange
 
+from GameWindow  import *
 # -----------------------------------------------------------------------------
 # Constants and global variables
 # -----------------------------------------------------------------------------
@@ -18,7 +19,7 @@ ABOUT = ['Game: Śląski świat ',
          'Email: oladuda1999@gmail.com']
 DIFFICULTY = ['EASY']
 FPS = 60.0
-WINDOW_SIZE = (640, 480)
+WINDOW_SIZE = (800, 600)
 
 clock = None  # type: pygame.time.Clock
 main_menu = None  # type: pygame_menu.Menu
@@ -30,28 +31,21 @@ surface = None  # type: pygame.Surface
 # -----------------------------------------------------------------------------
   
 
-def random_color():
-    return randrange(0, 255), randrange(0, 255), randrange(0, 255)
-
-
 def play_function( font, test=False):
     # Define globals
     global main_menu
     global clock
+    global play_menu
     
+    #start_game()
 
-    # Draw random color and text
-    bg_color = random_color()
-    f = font.render('Name', 1, (255, 255, 255))
-    f_width = f.get_size()[0]
-    
     game_menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.9,
+        height=WINDOW_SIZE[1],
         onclose=pygame_menu.events.DISABLE_CLOSE,
         title='Game Menu',
-        width=WINDOW_SIZE[0] * 0.9,
+        width=WINDOW_SIZE[0] ,
     )
-    game_menu.add_text_input('First name: ', default='')
+    
     
     # Reset main menu and disable
     # You also can set another menu, like a 'pause menu', or just use the same
@@ -59,8 +53,13 @@ def play_function( font, test=False):
     main_menu.disable()
     main_menu.reset(1)
 
-    while True:
+    user_name = game_menu.add_text_input('First name: ', default='')
+    game_menu.add_button('Play',start_game,user_name,surface)
+    game_menu.add_button('Back',pygame_menu.events.BACK)
+    game_menu.mainloop(surface)
 
+    while True:
+        
         # noinspection PyUnresolvedReferences
         clock.tick(60)
 
@@ -76,14 +75,6 @@ def play_function( font, test=False):
                     # Quit this function, then skip to loop of main-menu on line 317
                     return
 
-        # Pass events to main_menu
-        text_input = main_menu.add_text_input('My name: ', default='')
-        main_menu.update(events)
-
-
-        # Continue playing
-        surface.fill(bg_color)
-        surface.blit(f, ((WINDOW_SIZE[0] - f_width) / 2, WINDOW_SIZE[1] / 2))
         
         pygame.display.flip()
 
@@ -130,37 +121,43 @@ def main(test=False):
     #------------------------------------------
     # game menu: game_menu
     #------------------------------------------
-    game_menu = pygame_menu.Menu(
+    '''new_game_theme = pygame_menu.themes.THEME_DARK.copy()
+    new_game_theme.background_color = (0,0,0,0)
+    new_game_theme.title_background_color = (1,1,1,1)
+    
+    new_game_menu = pygame_menu.Menu(
         height=WINDOW_SIZE[1] * 0.9,
         onclose=pygame_menu.events.DISABLE_CLOSE,
         title='Game Menu',
+        theme=new_game_theme,
         width=WINDOW_SIZE[0] * 0.9,
     )
+'''
     
 
     # -------------------------------------------------------------------------
     # Create menus: Play Menu
     # -------------------------------------------------------------------------
     play_menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.9,
+        height=WINDOW_SIZE[1] ,
         onclose=pygame_menu.events.DISABLE_CLOSE,
         title='Play Menu',
-        width=WINDOW_SIZE[0] * 0.9,
+        width=WINDOW_SIZE[0] ,
     )
 
-    submenu_theme = pygame_menu.themes.THEME_DEFAULT.copy()
+    submenu_theme = pygame_menu.themes.THEME_DARK.copy()
     submenu_theme.widget_font_size = 15
     play_submenu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.9,
+        height=WINDOW_SIZE[1] ,
         theme=submenu_theme,
         title='Submenu',
-        width=WINDOW_SIZE[0] * 0.9,
+        width=WINDOW_SIZE[0] ,
     )
     for i in range(30):
         play_submenu.add_button('Back {0}'.format(i), pygame_menu.events.BACK)
     play_submenu.add_button('Return to main menu', pygame_menu.events.RESET)
 
-    play_menu.add_button('New game', game_menu)
+    play_menu.add_button('New game', play_function,pygame.font.Font(pygame_menu.font.FONT_FRANCHISE, 30))
    
     play_menu.add_button('Read game', play_submenu)
     play_menu.add_button('Return to main menu', pygame_menu.events.BACK)
@@ -168,16 +165,16 @@ def main(test=False):
     # -------------------------------------------------------------------------
     # Create menus:About
     # -------------------------------------------------------------------------
-    about_theme = pygame_menu.themes.THEME_DEFAULT.copy()
+    about_theme = pygame_menu.themes.THEME_DARK.copy()
     about_theme.widget_margin = (0, 0)
     about_theme.widget_offset = (0, 0.05)
 
     about_menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.9,
+        height=WINDOW_SIZE[1] ,
         onclose=pygame_menu.events.DISABLE_CLOSE,
         theme=about_theme,
         title='About',
-        width=WINDOW_SIZE[0] * 0.9,
+        width=WINDOW_SIZE[0] ,
     )
     for m in ABOUT:
         about_menu.add_label(m, align=pygame_menu.locals.ALIGN_LEFT, font_size=20)
@@ -187,15 +184,15 @@ def main(test=False):
     # -------------------------------------------------------------------------
     # Create menus: Main
     # -------------------------------------------------------------------------
-    main_theme = pygame_menu.themes.THEME_DEFAULT.copy()
+    main_theme = pygame_menu.themes.THEME_DARK.copy()
     main_theme.menubar_close_button = False  # Disable close button
 
     main_menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.9,
+        height=WINDOW_SIZE[1],
         onclose=pygame_menu.events.DISABLE_CLOSE,
         theme=main_theme,
         title='Main Menu',
-        width=WINDOW_SIZE[0] * 0.9
+        width=WINDOW_SIZE[0] 
     )
 
     main_menu.add_button('Play', play_menu)

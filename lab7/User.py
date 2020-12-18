@@ -40,7 +40,11 @@ class User:
     def buy_building(self,building)->None:
         price_list = {
             'Mint':3000,
-            'Hut':200
+            'Hut':200,
+            'Gold Mine':5000,
+            'Quarry': 200,
+            'Sawmill':500
+
         }
 
         for key, val in price_list.items():
@@ -49,7 +53,7 @@ class User:
                 if self.__money < val:
                     return 0
                 else:
-                    return 1
+                    return val
 
     def check_principle(self)->Building:
         counter = 0

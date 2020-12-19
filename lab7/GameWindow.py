@@ -4,6 +4,9 @@ from Buildings import *
 import time
 import threading 
 import pygame_menu
+import pickle
+import concurrent.futures
+from multiprocessing.pool import ThreadPool
 
 FOLDER_PATH = r'C:\GitRepo\Object_Oriented_Techniques\lab7\img'
 
@@ -22,9 +25,14 @@ class Button:
 
 
 def display_label(window,label, position,size):
+    result = type(position) is tuple
     main_font = pygame.font.SysFont("lato",size)
     name = main_font.render(label,1,(255,255,255))
-    window.blit(name,position)
+    if result:
+        x, y = position
+        window.blit(name,(x,y))
+    else:
+        window.blit(name,position)
 
 def display_buildings(surface,arr):
     for a in arr:
@@ -54,12 +62,25 @@ def paused(gameDisplay,buildings, user1):
             print(time.time() - start_time)
             pause = 0
         pygame.display.update()  
-        
+
+def save_game(user,created_objects):
+    with open('data/savefile.dat', 'wb') as f:
+        pickle.dump(user, f, protocol=2)
+
+
+def read_game():    
+    # loading
+    with open('data/savefile.dat', 'rb') as f:
+        user = pickle.load(f)
+    return user
+def receive_val():
+    x = self.generate_income_periodically
+    threading.Timer(10, x).start()
+    return x
 
 def start_game(user_name,surface):
     pygame.init() 
     
-    white = (255, 255, 255) 
     X = 800
     Y = 600
     
@@ -119,12 +140,39 @@ def start_game(user_name,surface):
     display_label(background,"Quarry",(480,130),20)
     display_label(background,"Sawmill",(600,130),20)
     
+    x_income = 0
+    y_income = 0
+    return_val = ''
     no_money =''
+    income = 0
 
+    return_income = {
+        'return_mint':'',
+        'return_hut':'',
+        'return_gold':'',
+        'return_quarry':'',
+        'return_sawmill':'',
+
+    }
+
+    income_position ={
+        'mint':(0,0),
+        'hut':(0,0),
+        'gold':(0,0),
+        'quarry':(0,0),
+        'sawmill':(0,0)
+
+    }
+    return_val =''
+    return_sawmill =''
+
+    x_sawmill = 0
+    y_sawmill = 0
+    
     while True :
         keyinput = pygame.key.get_pressed()
 
-        display_surface.fill(white) 
+        
         display_surface.blit(background, (0, 0)) 
         
         pygame.draw.rect(display_surface, color, pygame.Rect(0, 0, 800, 100)) 
@@ -153,7 +201,7 @@ def start_game(user_name,surface):
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                print(position)
+                print(type(position))
                 
                 for button in building_buttons:
                     if button.rect.collidepoint(position):
@@ -177,6 +225,12 @@ def start_game(user_name,surface):
                             user1.money-=price
                             mint_income = Income(building)
                             call_template_method(mint_income)
+
+                            x_income, y_income= position
+                            pool = ThreadPool(processes=5)
+                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            return_val = async_result.get()
+                            return_val = str(return_val)
                             
                         else:
                             building = None 
@@ -192,7 +246,13 @@ def start_game(user_name,surface):
                             building = GoldMine('Gold Mine',price)
                             user1.money-= price
                             goldmine_income = Income(building)
-                            call_template_method(goldmine_income)
+                            #call_template_method(goldmine_income)
+        
+                            pool = ThreadPool(processes=5)
+                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            return_val = async_result.get()
+                            return_val = str(return_val)
+                            return_income['gold_income'] = return_val
                         else:
                             building = None
                             no_money = "Not enough money"
@@ -206,7 +266,13 @@ def start_game(user_name,surface):
                             building = Hut('Hut',price)
                             user1.money-= price
                             hut_income = Income(building)
-                            call_template_method(hut_income)
+                            #call_template_method(hut_income)
+                            x_income, y_income= position
+                            pool = ThreadPool(processes=5)
+                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            return_val = async_result.get()
+                            return_val = str(return_val)
+                            return_income['hut_income'] = return_val
                         else:
                             building = None
                             no_money = "Not enough money"
@@ -220,7 +286,13 @@ def start_game(user_name,surface):
                             building = Quarry('Quarry',price)
                             user1.money-= price
                             hut_income = Income(building)
-                            call_template_method(hut_income)
+                            #call_template_method(hut_income)
+
+                            x_income, y_income= position
+                            pool = ThreadPool(processes=5)
+                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            return_val = async_result.get()
+                            return_val = str(return_val)
                         else:
                             building = None
                             no_money = "Not enough money"
@@ -234,7 +306,19 @@ def start_game(user_name,surface):
                             building = Sawmill('Sawmill',price)
                             user1.money-= price
                             hut_income = Income(building)
-                            call_template_method(hut_income)
+                            #call_template_method(hut_income)
+                            
+                            x_sawmill, y_sawmill= position
+                            income_position['sawmill'] = (x_sawmill+200,y_sawmill+100)
+                            
+                            pool = ThreadPool(processes=5)
+                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            return_sawmill = async_result.get()
+                            return_sawmill = str(return_sawmill)
+                            sawmill = income_position.get('sawmill')
+                            print("CO DAJE SAWMILL",type(income_position.get('sawmill')))
+                            print("income:",return_sawmill)
+                            
                         else:
                             building = None
                             no_money = "Not enough money"
@@ -248,11 +332,18 @@ def start_game(user_name,surface):
             
             
             display_buildings(display_surface,buildings)
+            save_game(user1,building_buttons)
+
+            display_label(display_surface,return_val,(x_income+70,y_income+100),30)
+            display_label(display_surface,return_sawmill,(x_sawmill+70,y_sawmill+100),30)
+            display_label(display_surface, return_income.get("sawmill_income", ""),income_position.get('sawmill'),30)
+            display_label(display_surface, return_income.get("gold_income", ""),(x_sawmill+70,y_sawmill+100),30)
+            
             display_label(display_surface,f"Money savings: {user1.money}",(10,0),50)
 
 
             pygame.display.update()  
 
-#if __name__ == "__main__":
-    #start_game('Ola')
-    #print(pygame.font.get_fonts())
+if __name__ == "__main__":
+    start_game('Ola',pygame.display.set_mode((800, 600 )) )
+    print(pygame.font.get_fonts())

@@ -53,6 +53,7 @@ class User:
                 if self.__money < val:
                     return 0
                 else:
+                    self._state =[key, self.__money]
                     return val
 
     def check_principle(self)->Building:
@@ -112,10 +113,16 @@ class Caretaker():
     def __init__(self, originator: User) -> None:
         self._mementos = []
         self._originator = originator
+        self._buildings = originator.get_collection()
+
 
     def backup(self) -> None:
         print("\nCaretaker: Saving Originator's state...")
         self._mementos.append(self._originator.save())
+        for b in self._buildings:
+            self._mementos.append(b.save())
+        return self._mementos
+
 
     def undo(self) -> None:
         if not len(self._mementos):
@@ -132,6 +139,7 @@ class Caretaker():
         print("Caretaker: Here's the list of mementos:")
         for memento in self._mementos:
             print(memento.get_name())
+
 '''
 user1 = User('Ola')
 caretaker = Caretaker(user1)
@@ -140,8 +148,12 @@ caretaker.backup()
 user1.nickname='oola'
 caretaker.backup()
 
-hut = Hut("Hut",200)
-user1.buy_building(hut)
+
+#hut = Hut("Hut",200)
+#user1.buy_building(hut)
+
+caretaker.show_history()
+
 
 caretaker.backup()
 hut = Mint("Mint",200)

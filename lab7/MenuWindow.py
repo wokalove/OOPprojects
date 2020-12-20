@@ -83,6 +83,12 @@ def play_function( font, test=False):
             break
 
 
+def read_game():    
+    # loading
+    with open('data/savefile.dat', 'rb') as f:
+        user = pickle.load(f)
+    return user
+    
 def main_background():
     """
     Function used by menus, draw on background while menu is active.
@@ -118,22 +124,7 @@ def main(test=False):
     pygame.display.set_caption('Example - Game Selector')
     clock = pygame.time.Clock()
 
-    #------------------------------------------
-    # game menu: game_menu
-    #------------------------------------------
-    '''new_game_theme = pygame_menu.themes.THEME_DARK.copy()
-    new_game_theme.background_color = (0,0,0,0)
-    new_game_theme.title_background_color = (1,1,1,1)
-    
-    new_game_menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.9,
-        onclose=pygame_menu.events.DISABLE_CLOSE,
-        title='Game Menu',
-        theme=new_game_theme,
-        width=WINDOW_SIZE[0] * 0.9,
-    )
-'''
-    
+
 
     # -------------------------------------------------------------------------
     # Create menus: Play Menu

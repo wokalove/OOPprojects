@@ -51,7 +51,7 @@ def paused(gameDisplay,buildings, user1):
 
     while pause:
         display_buildings(gameDisplay,buildings)
-        display_label(gameDisplay,f"Money savings: {user1.money}",(10,0),50)
+        display_label(gameDisplay,f"Szporobliwosci: {user1.money}",(10,0),50)
 
         for event in pygame.event.get():
             
@@ -129,12 +129,13 @@ def start_game(user_name,surface):
 
     building_buttons = [button1, button2, button3, button4,button5]
 
-    display_label(background,"Mint",(90,130),20)
-    display_label(background,"Hut",(225,130),20)
-    display_label(background,"Gold Mine",(330,130),20)
-    display_label(background,"Quarry",(480,130),20)
-    display_label(background,"Sawmill",(600,130),20)
+    display_label(background,"Mennica",(90,130),20)
+    display_label(background,"Cahtka",(225,130),20)
+    display_label(background,"Gruba złoto",(330,130),20)
+    display_label(background,"Kamieniołom",(450,130),20)
+    display_label(background,"Tartak",(600,130),20)
     
+    user_collection = []
     x_income = 0
     y_income = 0
     return_val = ''
@@ -214,23 +215,29 @@ def start_game(user_name,surface):
                             x,y = position
                             building = Mint('Mint',price)
                             mints_pos.append((x+50,y+100))
+                            
                             user1.money-=price
+                            user_collection.append(building)
+
                             mint_income = Income(building)
                             call_template_method(mint_income)
 
                             x_income, y_income= position
                             pool = ThreadPool(processes=5)
-                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            async_result = pool.apply_async(mint_income.generate_income_periodically) # tuple of args for foo
                             return_mint = async_result.get()
-                            return_mint = str(return_val)
+                            #user1.money+= return_mint
+
+                            return_mint = str(return_mint)
                             return_income['mint'] = return_mint
+                            
 
                             save_game(caretaker.backup(),building_buttons)
                             caretaker.show_history()
                             
                         else:
                             building = None 
-                            no_money = "Not enough money!"
+                            no_money = "Za mało pijyndzy!"
                             display_label(display_surface,no_money,(470,15),30)
                             paused(display_surface, buildings, user1)        
                             print(no_money)
@@ -238,25 +245,33 @@ def start_game(user_name,surface):
                 
                     elif clicked_building[0] == "Gold Mine":
                         price = user1.buy_building(clicked_building[0])
-                        if price:
+                        principle = user1.check_principle(user_collection)
+                        print("PRINCIPLE:",principle)
+
+                        if price and principle:
                             x,y = position
                             building = GoldMine('Gold Mine',price)
-                            gold_pos.append((x+50,y+50))
+                            gold_pos.append((x+50,y+100))
+                            
                             user1.money-= price
+                            user_collection.append(building)
+
                             goldmine_income = Income(building)
-                            #call_template_method(goldmine_income)
-        
+                            call_template_method(goldmine_income)
+
                             pool = ThreadPool(processes=5)
-                            async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
+                            async_result = pool.apply_async(goldmine_income.generate_income_periodically) # tuple of args for foo
                             return_gold = async_result.get()
+                            #user1.money+= return_gold
+
                             return_gold = str(return_gold)
                             return_income['gold'] = return_gold
-                            
+
                             save_game(caretaker.backup(),building_buttons)
                             caretaker.show_history()
                         else:
                             building = None
-                            no_money = "Not enough money"
+                            no_money = "Za mało pijyndzy!"
                             display_label(display_surface,no_money,(470,15),30)
                             paused(display_surface, buildings, user1) 
                             print(no_money)
@@ -268,23 +283,28 @@ def start_game(user_name,surface):
                             building = Hut('Hut',price)
                             
                             huts_pos.append((x+50,y+100))
-
+                            
                             user1.money-= price
+                            user_collection.append(building)
+
                             hut_income = Income(building)
                             #call_template_method(hut_income)
                             x_income, y_income= position
                             pool = ThreadPool(processes=5)
                             async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
                             return_hut = async_result.get()
+                            #user1.money+= return_hut
                             return_hut = str(return_hut)
-                            return_income['hut'] = return_hut
 
+                            return_income['hut'] = return_hut
+                            
+                            
                             print("In hut:",return_hut)
                             save_game(caretaker.backup(),building_buttons)
                             caretaker.show_history()
                         else:
                             building = None
-                            no_money = "Not enough money"
+                            no_money = "Za mało pijyndzy!"
                             display_label(display_surface,no_money,(470,15),30)
                             paused(display_surface, buildings, user1) 
                             print(no_money)
@@ -298,6 +318,8 @@ def start_game(user_name,surface):
                             quarry_pos.append((x+50,y+100))
 
                             user1.money-= price
+                            user_collection.append(building)
+
                             hut_income = Income(building)
                             #call_template_method(hut_income)
 
@@ -305,14 +327,17 @@ def start_game(user_name,surface):
                             pool = ThreadPool(processes=5)
                             async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
                             return_quarry = async_result.get()
+                            #user1.money+= return_quarry
+
                             return_quarry = str(return_quarry)
                             return_income['quarry'] = return_quarry
+                            
 
                             save_game(caretaker.backup(),building_buttons)
                             caretaker.show_history()
                         else:
                             building = None
-                            no_money = "Not enough money"
+                            no_money = "Za mało pijyndzy!"
                             display_label(display_surface,no_money,(470,15),30)
                             paused(display_surface, buildings, user1) 
                             print(no_money)
@@ -323,7 +348,10 @@ def start_game(user_name,surface):
                             x,y =position
                             building = Sawmill('Sawmill',price)
                             sawmil_pos.append((x+50,y+100))
+
                             user1.money-= price
+                            user_collection.append(building)
+
                             hut_income = Income(building)
                             
                             #call_template_method(hut_income)
@@ -334,7 +362,10 @@ def start_game(user_name,surface):
                             pool = ThreadPool(processes=5)
                             async_result = pool.apply_async(hut_income.generate_income_periodically) # tuple of args for foo
                             return_sawmill = async_result.get()
+                            #user1.money += return_sawmill
+
                             return_sawmill = str(return_sawmill)
+                            
 
                             return_income['sawmill'] = return_sawmill
                             print("CO DAJE SAWMILL",type(return_income.get('sawmill')))
@@ -345,12 +376,12 @@ def start_game(user_name,surface):
                             
                         else:
                             building = None
-                            no_money = "Not enough money"
+                            no_money = "Za mało pijyndzy!"
                             display_label(display_surface,no_money,(470,15),30)
                             paused(display_surface, buildings, user1) 
                             print(no_money)
 
-                    #TODO kombo!
+                    
                     if building:
                         buildings.append([building.image,position])
             
@@ -377,7 +408,7 @@ def start_game(user_name,surface):
             #display_label(display_surface, return_income.get("sawmill_income", ""),income_position.get('sawmill'),30)
             #display_label(display_surface, return_income.get("gold_income", ""),(x_sawmill+70,y_sawmill+100),30)
             
-            display_label(display_surface,f"Money savings: {user1.money}",(10,0),50)
+            display_label(display_surface,f"Szporobliwosci: {user1.money}",(10,0),50)
             
 
             pygame.display.update()  

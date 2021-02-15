@@ -39,7 +39,7 @@ class Building(pygame.sprite.Sprite):
         pass
 
 class Mint(Building):
-    def __init__(self,name,value,url):
+    def __init__(self,name,value):
         img_mint_path = FOLDER_PATH + r'\mint.png'
         self.url = img_mint_path
         super().__init__(name,value,self.url)
@@ -87,16 +87,12 @@ class Income(Building):
         #return self.general_income
         
  
+class Template:
+    @staticmethod
+    def call_template_method(abstract_class:Building)->None:
+        abstract_class.template_method()
 
-def call_template_method(abstract_class:Building)->None:
-    abstract_class.template_method()
 
-'''
-img_mint_path = FOLDER_PATH + r'\mint.png'
-mint = Mint('Mint',3000,img_mint_path)
-mint_income = Income(mint)
-'''
-#call_template_method(mint_income)
 
 
 

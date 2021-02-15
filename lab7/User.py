@@ -11,7 +11,7 @@ class User:
     def __init__(self,nickname):
         self.__money = 2000
         self.__nickname = nickname
-        self.__collection = []
+        self.collection = []
         self._state = [self.__nickname,self.__money]
         
     def change_state(self,new_state):
@@ -32,10 +32,9 @@ class User:
     def nickname(self,nickname):
         self.__nickname = nickname
         self._state = nickname
-        
 
     def get_collection(self):
-        return self.__collection
+        return self.collection
 
     def buy_building(self,building)->None:
         price_list = {
@@ -56,20 +55,23 @@ class User:
                     self._state =[key, self.__money]
                     return val
 
-    def check_principle(self)->Building:
+    def check_principle(self,buildings)->Building:
         counter = 0
-
-        for c in self.__collection:
-            if isinstance(c, Mint) or isinstance(c, Hut):
+        for c in buildings:
+            if isinstance(c,Quarry) or isinstance(c,Hut) or isinstance(c,Sawmill):
                 counter+=1
-                if counter == 2:
-                    print("Możesz wybudować kopalnię złota, mennicę i tartak")
+                if counter == 3:
+                    print("You can build mint, gold mine and sawmill")
+                    return COUNTER
                 else:
-                    print("Nie możesz wybudować kopalnii złota, mennicy oraz tartaku")
+                    print("You can't build mint, gold mine and sawmill")
+                    return 0
+
+            else:
+                print("You can't build mint, gold mine and sawmill")
+                return 0
     def save(self) -> Memento:
-        """
-        Saves the current state inside a memento.
-        """
+    
         print("In save function",ConcreteMemento(self._state))
 
         return ConcreteMemento(self._state)
@@ -104,11 +106,6 @@ class ConcreteMemento(Memento):
         return self._date
 
 class Caretaker():
-    """
-    The Caretaker doesn't depend on the Concrete Memento class. Therefore, it
-    doesn't have access to the originator's state, stored inside the memento. It
-    works with all mementos via the base Memento interface.
-    """
 
     def __init__(self, originator: User) -> None:
         self._mementos = []
@@ -140,34 +137,3 @@ class Caretaker():
         for memento in self._mementos:
             print(memento.get_name())
 
-'''
-user1 = User('Ola')
-caretaker = Caretaker(user1)
-
-caretaker.backup()
-user1.nickname='oola'
-caretaker.backup()
-
-
-#hut = Hut("Hut",200)
-#user1.buy_building(hut)
-
-caretaker.show_history()
-
-
-caretaker.backup()
-hut = Mint("Mint",200)
-user1.buy_building(hut)
-
-caretaker.backup()
-hut = Mint("Mint",200)
-user1.buy_building(hut)
-
-caretaker.show_history()
-mint = Mint('Mint',3000)
-hut = Hut("Hut",200)
-user1.buy_building(mint)
-user1.buy_building(hut)
-print(user1.get_collection())
-user1.check_principle()
-'''

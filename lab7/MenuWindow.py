@@ -13,8 +13,8 @@ from GameWindow  import *
 # -----------------------------------------------------------------------------
 # Constants and global variables
 # -----------------------------------------------------------------------------
-ABOUT = ['Game: Śląski świat ',
-         'Author: Ola Duda',
+ABOUT = ['Szpil: Śląski świat ',
+         'Autor: Ola Duda',
          '',  # new line
          'Email: oladuda1999@gmail.com']
 DIFFICULTY = ['EASY']
@@ -53,9 +53,9 @@ def play_function( font, test=False):
     main_menu.disable()
     main_menu.reset(1)
 
-    user_name = game_menu.add_text_input('First name: ', default='')
-    game_menu.add_button('Play',start_game,user_name,surface)
-    game_menu.add_button('Back',pygame_menu.events.BACK)
+    user_name = game_menu.add_text_input('Miano: ', default='')
+    game_menu.add_button('Grej',start_game,user_name,surface)
+    game_menu.add_button('Wrōć',pygame_menu.events.BACK)
     game_menu.mainloop(surface)
 
     while True:
@@ -121,7 +121,7 @@ def main(test=False):
 
     # Create pygame screen and objects
     surface = pygame.display.set_mode(WINDOW_SIZE)
-    pygame.display.set_caption('Example - Game Selector')
+    pygame.display.set_caption('Szpil po ślōnsku')
     clock = pygame.time.Clock()
 
 
@@ -132,7 +132,7 @@ def main(test=False):
     play_menu = pygame_menu.Menu(
         height=WINDOW_SIZE[1] ,
         onclose=pygame_menu.events.DISABLE_CLOSE,
-        title='Play Menu',
+        title='Grej myni',
         width=WINDOW_SIZE[0] ,
     )
 
@@ -141,17 +141,17 @@ def main(test=False):
     play_submenu = pygame_menu.Menu(
         height=WINDOW_SIZE[1] ,
         theme=submenu_theme,
-        title='Submenu',
+        title='Myni',
         width=WINDOW_SIZE[0] ,
     )
     for i in range(30):
         play_submenu.add_button('Back {0}'.format(i), pygame_menu.events.BACK)
-    play_submenu.add_button('Return to main menu', pygame_menu.events.RESET)
+    play_submenu.add_button('Wrōć', pygame_menu.events.RESET)
 
-    play_menu.add_button('New game', play_function,pygame.font.Font(pygame_menu.font.FONT_FRANCHISE, 30))
+    play_menu.add_button('Nowy szpil', play_function,pygame.font.Font(pygame_menu.font.FONT_FRANCHISE, 30))
    
-    play_menu.add_button('Read game', play_submenu)
-    play_menu.add_button('Return to main menu', pygame_menu.events.BACK)
+    play_menu.add_button('Wgrej szpil', play_submenu)
+    play_menu.add_button('Wrōć', pygame_menu.events.BACK)
 
     # -------------------------------------------------------------------------
     # Create menus:About
@@ -164,13 +164,13 @@ def main(test=False):
         height=WINDOW_SIZE[1] ,
         onclose=pygame_menu.events.DISABLE_CLOSE,
         theme=about_theme,
-        title='About',
+        title='Ô autor',
         width=WINDOW_SIZE[0] ,
     )
     for m in ABOUT:
         about_menu.add_label(m, align=pygame_menu.locals.ALIGN_LEFT, font_size=20)
     about_menu.add_label('')
-    about_menu.add_button('Return to menu', pygame_menu.events.BACK)
+    about_menu.add_button('Wrōć', pygame_menu.events.BACK)
 
     # -------------------------------------------------------------------------
     # Create menus: Main
@@ -182,13 +182,13 @@ def main(test=False):
         height=WINDOW_SIZE[1],
         onclose=pygame_menu.events.DISABLE_CLOSE,
         theme=main_theme,
-        title='Main Menu',
+        title='Myni bazowe',
         width=WINDOW_SIZE[0] 
     )
 
-    main_menu.add_button('Play', play_menu)
-    main_menu.add_button('About', about_menu)
-    main_menu.add_button('Quit', pygame_menu.events.EXIT)
+    main_menu.add_button('Grej', play_menu)
+    main_menu.add_button('Ô autor', about_menu)
+    main_menu.add_button('Zakōńcz', pygame_menu.events.EXIT)
 
     # -------------------------------------------------------------------------
     # Main loop
